@@ -3,6 +3,7 @@ import { NeoPacket } from './Base/NeoPacket';
 import { PacketProcessFactory } from './Factory/PacketProcessFactory';
 import { PacketHandleFactory } from './Factory/PacketHandleFactory';
 import { SenderFactory } from './Factory/SenderFactory';
+import { DemandPacket } from './Base/DemandPacket';
 
 type DisconnectCallback = () => void;
 type OpenCallback = () => void;
@@ -80,6 +81,15 @@ export class NeoClient {
     });
 
     return Promise.race([this.senderFactory.demand(packet), timeout]);
+  }
+
+  public send(packet: NeoPacket, maxWaitTime: number = 30000): any {
+    if (packet instanceof DemandPacket) {
+      return this.senderFactory.demand(packet);
+    } else {
+      this.senderFactory.command(packet);
+      return null;
+    }
   }
 
   public sendData(data: Uint8Array) {

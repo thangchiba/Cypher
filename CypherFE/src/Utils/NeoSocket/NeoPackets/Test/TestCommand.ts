@@ -4,7 +4,7 @@ import { DKey } from '../../NeoSocketLib/Decorator/DKey';
 import { DemandPacket } from '../../NeoSocketLib/Base/DemandPacket';
 
 @DNeoPacket()
-export class TestDemand extends DemandPacket {
+export class TestCommand extends NeoPacket {
   @DKey(0)
   public Content: string = '';
 }
