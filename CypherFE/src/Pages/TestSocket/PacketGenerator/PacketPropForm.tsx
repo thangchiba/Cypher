@@ -17,7 +17,7 @@ const PacketPropForm: React.FC<{ packet: CNeoPacket; jsonPacket: string }> = (pr
     onSubmit: (values) => {
       const updatedPacket = JSON.parse(JSON.stringify(values)) as NeoPacket;
       const sendPacket = jsonToClassInstance(updatedPacket, packet.construct);
-      client?.command(sendPacket);
+      client?.demand(sendPacket);
     },
   });
 

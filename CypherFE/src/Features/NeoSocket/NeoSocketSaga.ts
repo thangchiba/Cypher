@@ -16,8 +16,8 @@ function* openConnectionSaga() {
       yield put(setConnection(null));
     }
 
-    // const newClient: NeoClient = new NeoClient('neosk://localhost:51994');
-    const newClient: NeoClient = new NeoClient('neosks://api.thangchiba.com/websocket:443');
+    const newClient: NeoClient = new NeoClient('neosk://localhost:51994');
+    // const newClient: NeoClient = new NeoClient('neosks://api.thangchiba.com/websocket:443');
 
     // Handle disconnect event
     newClient.onDisconnect.push(() => {

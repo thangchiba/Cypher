@@ -16,12 +16,10 @@ export class PacketHandleFactory {
       const receivedPackets = NeoSerializer.deserializeMulti(buffer);
       for (const receivedPacket of receivedPackets) {
         this.client.onHandle.forEach((handle) => handle(receivedPacket));
-        if (receivedPacket.Header.isReply) {
+        if (receivedPacket.Header.Flags.IsReply) {
           this.packetProcessFactory.processReply(receivedPacket);
           continue;
         }
-
-        const packetTypeNumber = receivedPacket.Header.packetTypeNumber;
         await this.packetProcessFactory.processPacket(this.client, receivedPacket);
       }
     } catch (e: any) {

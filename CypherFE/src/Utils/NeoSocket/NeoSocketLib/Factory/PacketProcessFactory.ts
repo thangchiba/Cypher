@@ -23,7 +23,7 @@ export class PacketProcessFactory {
       if (!replyPackets) return;
       for (const replyPacket of replyPackets) {
         if (!replyPacket) continue;
-        if (replyPacket.Header.isReply) {
+        if (replyPacket.Header.Flags.IsReply) {
           this.senderFactory.addReply(replyPacket);
         }
       }

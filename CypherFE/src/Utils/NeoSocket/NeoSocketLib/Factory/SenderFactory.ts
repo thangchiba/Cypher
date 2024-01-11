@@ -17,7 +17,7 @@ export class SenderFactory {
   public async demand(packet: NeoPacket): Promise<NeoPacket | null> {
     try {
       packet.Header.packetId = this.key;
-      packet.Header.isDemand = true;
+      packet.Header.Flags.IsDemand = true;
       const sendData = NeoSerializer.serialize(packet);
 
       //@ts-ignore
@@ -44,7 +44,7 @@ export class SenderFactory {
   }
 
   public addReply(packet: NeoPacket) {
-    const key = packet.Header.packetId;
+    const key = packet.Header.packetId || 0;
     const taskReply = DemandMapper.get(key);
 
     if (taskReply) {
@@ -56,7 +56,7 @@ export class SenderFactory {
   public reply(demandPacket: NeoPacket, replyPacket: NeoPacket) {
     try {
       replyPacket.Header.packetId = demandPacket.Header.packetId;
-      replyPacket.Header.isReply = true;
+      replyPacket.Header.Flags.IsReply = true;
       const sendData = NeoSerializer.serialize(replyPacket);
       this.sendDataToClient(this.client, sendData);
     } catch (e) {
@@ -67,7 +67,6 @@ export class SenderFactory {
 
   public command(packet: NeoPacket): boolean {
     try {
-      packet.Header.isDemand = false;
       const sendData = NeoSerializer.serialize(packet);
       this.client.sendData(sendData);
       return true;
@@ -79,9 +78,6 @@ export class SenderFactory {
 
   public commands(packets: NeoPacket[]): boolean {
     try {
-      for (const packet of packets) {
-        packet.Header.isDemand = false;
-      }
       const sendData = NeoSerializer.serializeMulti(packets);
       this.client.sendData(sendData);
       return true;

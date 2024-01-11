@@ -4,6 +4,7 @@ import { CNeoKey } from '../Cache/Packet/CNeoKey';
 import { CNeoPacket } from '../Cache/Packet/CNeoPacket';
 import { NeoPacketHeader } from '../Base/NeoPacketHeader';
 import { NeoCache } from '../Cache/NeoCache';
+import { HeaderFlags } from '../Base/HeaderFlags';
 
 export class NeoSerializer {
   public static serialize(packet: NeoPacket): Uint8Array {
@@ -90,18 +91,45 @@ export class NeoSerializer {
     }
     return packet;
   }
+  public static serializeHeader(header: NeoPacketHeader): Uint8Array {
+    let dataArray: Array<any> = [];
 
-  public static serializeHeader(header: NeoPacketHeader): Uint8Array | null {
-    return encode([header.isDemand, header.isReply, header.packetTypeNumber, header.packetTypeName, header.packetId]);
+    // Serialize the flag byte
+    let flagByte = HeaderFlags.Serialize(header.Flags);
+    dataArray.push(flagByte);
+
+    dataArray.push(header.packetTypeNumber);
+    dataArray.push(header.packetTypeName);
+
+    if (header.Flags.IsDemand || header.Flags.IsReply) {
+      dataArray.push(header.packetId ?? 0); // Replace null with default value
+    }
+    if (header.Flags.IsReply) {
+      dataArray.push(header.statusCode ?? 0); // Replace null with default value
+      dataArray.push(header.message ?? ''); // Replace null with empty string
+    }
+
+    return new Uint8Array(encode(dataArray)); // Using your encoding logic
   }
 
   public static deserializeHeader(data: any[]): NeoPacketHeader {
     const header = new NeoPacketHeader();
-    header.isDemand = data[0];
-    header.isReply = data[1];
-    header.packetTypeNumber = data[2];
-    header.packetTypeName = data[3];
-    header.packetId = data[4];
+    let index = 0;
+
+    let flags = HeaderFlags.Deserialize(data[index++]);
+    header.Flags = flags;
+
+    header.packetTypeNumber = data[index++];
+    header.packetTypeName = data[index++];
+
+    if (flags.IsDemand || flags.IsReply) {
+      header.packetId = data[index++];
+    }
+    if (flags.IsReply) {
+      header.statusCode = data[index++];
+      header.message = data[index++];
+    }
+
     return header;
   }
 }
