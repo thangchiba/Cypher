@@ -13,6 +13,7 @@ export function DNeoPacket(packetTypeNumber: number = 0, packetTypeName: string 
         let propertyType = typeof instance[propertyName];
         if (instance[propertyName] instanceof NeoPacket) {
           propertyType = instance[propertyName].constructor.name;
+          console.log(propertyType);
         }
         keys.push(new CNeoKey(keyId, propertyName, propertyType));
       }

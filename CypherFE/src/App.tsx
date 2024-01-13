@@ -11,6 +11,8 @@ import { getTheme } from './Settings/ThemeSetting';
 import { ToastContainer } from 'react-toastify';
 import LoadingModal from './Components/LoadingModal';
 import TestSocket from './Pages/TestSocket';
+import HomePage from './Pages/HomePage';
+import Room from './Pages/Room';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -28,9 +30,10 @@ function App() {
         <Navbar onMenuClick={toggleSidebar} />
         <Box component="main" sx={{ flexGrow: 1, p: 1, width: '100%', mt: '64px' }}>
           <Routes>
-            <Route index element={<TestSocket />} />
+            <Route index element={<HomePage />} />
             {/*<Route index element={<div>This is the home page</div>} />*/}
-            <Route index path="test-socket" element={<TestSocket />} />
+            <Route path="/room/:roomName" element={<Room />} />
+            <Route path="test-socket" element={<TestSocket />} />
             <Route path="about" element={<div>hi</div>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
