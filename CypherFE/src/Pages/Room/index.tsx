@@ -31,7 +31,7 @@ function Index() {
     const enterRoomPacket = new EnterChatRoomDemand();
     enterRoomPacket.Address = roomName || '';
     enterRoomPacket.UserName = roomName || 'thangchiba';
-    const response: EnterChatRoomReply = await client?.send(enterRoomPacket);
+    const response: EnterChatRoomReply = await client?.demand(enterRoomPacket);
     console.log(response);
   }
 
