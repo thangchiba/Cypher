@@ -1,32 +1,28 @@
-// Styled component for message item
 import { ListItem, ListItemText, styled } from '@mui/material';
+import { ListItemProps } from '@mui/material/ListItem';
 
-const StyledMessageItem = styled(ListItem)(({ theme }) => ({
+// Extend the ListItemProps type to include the isSender prop
+interface StyledMessageItemProps extends ListItemProps {
+  isSender: boolean;
+}
+
+const StyledMessageItem = styled(ListItem)<StyledMessageItemProps>(({ theme, isSender }) => ({
   borderRadius: '10px',
   marginTop: 1,
-  width: '80%',
-  backgroundColor: theme.palette.mode === 'dark' ? 'darkgrey' : 'lightgrey',
+  width: '60%',
+  backgroundColor: isSender ? (theme.palette.mode === 'dark' ? 'darkorange' : 'lightblue') : theme.palette.mode === 'dark' ? 'darkgrey' : 'lightgrey',
   '& .MuiListItemText-root': {
-    wordBreak: 'break-word', // Breaks long words to prevent overflow
-    whiteSpace: 'normal', // Ensures normal text wrapping
+    wordBreak: 'break-word',
+    whiteSpace: 'normal',
   },
+  padding: '0px 10px',
 }));
-// const StyledMessageItem = styled(ListItem)(({ theme }) => ({
-//   borderRadius: '10px',
-//   marginTop: 1,
-//   width: '80%',
-//   backgroundColor: theme.palette.mode === 'dark' ? 'darkorange' : 'lightblue',
-//   '& .MuiListItemText-root': {
-//     wordBreak: 'break-word', // Breaks long words to prevent overflow
-//     whiteSpace: 'normal', // Ensures normal text wrapping
-//   },
-// }));
 
 // MessageItem component
 export const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
   return (
-    <StyledMessageItem>
-      <ListItemText primary={message.Content} />
+    <StyledMessageItem isSender={message.isSender}>
+      <ListItemText primary={message.DecodedContent} />
     </StyledMessageItem>
   );
 };

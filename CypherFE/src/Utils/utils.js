@@ -54,6 +54,7 @@ export const getRandomColor = () => {
   }
   return color;
 };
+
 export function jsonToClassInstance(jsonObject, ClassType) {
   let instance = new ClassType();
 
@@ -84,4 +85,18 @@ export function jsonToClassInstance(jsonObject, ClassType) {
   }
 
   return instance;
+}
+
+function debounce(func, wait) {
+  let timeout;
+
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }

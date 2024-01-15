@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Grid, List, ListItem, styled, TextField, Theme } from '@mui/material';
 import { MessageDTO } from '../../Utils/NeoSocket/NeoPackets/Test/MessageDTO';
 import { useSelector } from 'react-redux';
@@ -6,11 +6,12 @@ import { RootState } from '../../Redux/store';
 import { HandleContext } from '../../Utils/NeoSocket/NeoSocketLib/Base/HandleContext';
 import useHandler from '../../Utils/NeoSocket/CustomHook/useHandler';
 import { MessageItem } from './MessageItem';
+import { decryptMessage, encryptMessage } from '../../Utils/utilsTS';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBlock: '1px solid orange',
   overflowY: 'scroll',
-  height: '70%',
+  height: '55%',
   display: 'flex',
   flexDirection: 'column-reverse',
   // Hide scrollbar for Chrome, Safari and other WebKit browsers
@@ -36,23 +37,62 @@ const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const { client, isConnecting } = useSelector((redux: RootState) => redux.neosocket);
+  const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
 
-  const handleReceiveMessage = useCallback((packet: MessageDTO, context: HandleContext) => {
-    console.log('Handled meesage : ', packet);
-    const handleMessage: Message = { Content: packet.Content, UserName: packet.UserName, isSender: true };
-    setMessages((prevState) => [...prevState, handleMessage]);
-  }, []);
+  const handleReceiveMessage = useCallback(
+    (packet: MessageDTO, context: HandleContext) => {
+      console.log('Handled meesage : ', packet);
+      // const decodedChatContent = decryptMessage(packet.Content, enigma);
+      const handleMessage: Message = {
+        UserName: packet.UserName,
+        Content: packet.Content,
+        DecodedContent: decryptMessage(packet.Content, enigma),
+        isSender: packet.UserName === nickName,
+      };
+      setMessages((prevState) => [...prevState, handleMessage]);
+    },
+    [enigma, nickName],
+  );
   useHandler(MessageDTO, handleReceiveMessage);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
 
+  useEffect(() => {
+    // Create a new array of messages with decrypted content
+    console.log('redecode');
+    const decryptedMessages = messages.map((message) => {
+      const decryptedMessage = decryptMessage(message.Content, enigma);
+      console.log({ decryptedMessage });
+      return {
+        ...message,
+        DecodedContent: decryptedMessage,
+      };
+    });
+    console.log(decryptedMessages);
+
+    // Update the state with the new array of decrypted messages
+    setMessages(decryptedMessages);
+  }, [enigma]);
+
+  useEffect(() => {
+    const newMessages = messages.map((message) => {
+      const isSender = message.UserName === nickName;
+      return {
+        ...message,
+        isSender,
+      };
+    });
+    setMessages(newMessages);
+  }, [nickName]);
+
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
+      const encodedChatContent = encryptMessage(input, enigma);
       const newMessage: MessageDTO = new MessageDTO();
-      newMessage.UserName = 'ThangChiba';
-      newMessage.Content = input;
+      newMessage.UserName = nickName;
+      newMessage.Content = encodedChatContent;
       // setMessages([...messages, newMessage]);
       setInput('');
       client?.command(newMessage);
@@ -64,8 +104,15 @@ const ChatBox: React.FC = () => {
       <MessagesFrame>
         <List>
           {messages.map((message, index) => (
-            <ListItem key={`message${index}`} sx={{ paddingInline: 0 }}>
-              <MessageItem message={message} />
+            <ListItem
+              key={`message${index}`}
+              sx={{
+                paddingInline: 0,
+                display: 'flex',
+                justifyContent: message.isSender ? 'flex-end' : 'flex-start',
+              }}
+            >
+              {message.DecodedContent && <MessageItem message={message} />}
             </ListItem>
           ))}
         </List>
