@@ -13,21 +13,23 @@ import LoadingModal from './Components/LoadingModal';
 import TestSocket from './Pages/TestSocket';
 import HomePage from './Pages/HomePage';
 import Room from './Pages/Room';
+import Sidebar from './Components/Sidebar';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
   const theme = useMemo(() => getTheme(darkMode), [darkMode]);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
+  const toggleSetting = () => {
+    setSidebarOpen((prevValue) => !prevValue);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Navbar onMenuClick={toggleSidebar} />
+        <Navbar onSettingClick={toggleSetting} />
+        <Sidebar open={isSidebarOpen} onClose={toggleSetting} />
         <Box component="main" sx={{ flexGrow: 1, p: 1, width: '100%', mt: '64px' }}>
           <Routes>
             <Route index element={<HomePage />} />

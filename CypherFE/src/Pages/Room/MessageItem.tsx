@@ -15,13 +15,14 @@ const StyledMessageItem = styled(ListItem)<StyledMessageItemProps>(({ theme, isS
     wordBreak: 'break-word',
     whiteSpace: 'normal',
   },
-  padding: '0px 10px',
+  // padding: '0px 10px',
 }));
 
 // MessageItem component
 export const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
   return (
     <StyledMessageItem isSender={message.isSender}>
+      {message.isSender ? '' : message.UserName}
       <ListItemText primary={message.DecodedContent} />
     </StyledMessageItem>
   );

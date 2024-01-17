@@ -9,9 +9,10 @@ import { MessageItem } from './MessageItem';
 import { decryptMessage, encryptMessage } from '../../Utils/utilsTS';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
-  borderBlock: '1px solid orange',
+  borderBottom: '1px solid',
+  borderColor: theme.palette.mode === 'dark' ? 'orange' : theme.palette.primary.light,
   overflowY: 'scroll',
-  height: '55%',
+  height: '85%',
   display: 'flex',
   flexDirection: 'column-reverse',
   // Hide scrollbar for Chrome, Safari and other WebKit browsers
@@ -103,18 +104,21 @@ const ChatBox: React.FC = () => {
     <>
       <MessagesFrame>
         <List>
-          {messages.map((message, index) => (
-            <ListItem
-              key={`message${index}`}
-              sx={{
-                paddingInline: 0,
-                display: 'flex',
-                justifyContent: message.isSender ? 'flex-end' : 'flex-start',
-              }}
-            >
-              {message.DecodedContent && <MessageItem message={message} />}
-            </ListItem>
-          ))}
+          {messages.map(
+            (message, index) =>
+              message.DecodedContent && (
+                <ListItem
+                  key={`message${index}`}
+                  sx={{
+                    paddingInline: 0,
+                    display: 'flex',
+                    justifyContent: message.isSender ? 'flex-end' : 'flex-start',
+                  }}
+                >
+                  <MessageItem message={message} />
+                </ListItem>
+              ),
+          )}
         </List>
       </MessagesFrame>
       <ChatFormFrame>

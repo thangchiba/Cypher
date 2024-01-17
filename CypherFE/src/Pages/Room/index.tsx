@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { PageBackGround } from '../../Components/PageBackGround';
-import { CenterBox } from '../../Components/Navbar/CenterBox';
+import { CenterBox } from '../../Components/CenterBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { openConnection } from '../../Features/NeoSocket/NeoSocketSlice';
 import { RootState } from '../../Redux/store';
@@ -18,7 +18,6 @@ interface RouteParams {
 function Index() {
   const dispatch = useDispatch();
   const { client, isConnecting } = useSelector((redux: RootState) => redux.neosocket);
-  const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
   const location = useLocation();
   const { roomName } = useParams<'roomName'>();
   const getQueryStringValue = (key: string) => {
@@ -43,36 +42,10 @@ function Index() {
   }, [roomName, client]);
 
   const enigmaCode = getQueryStringValue('enigma');
-
-  function handleChangeEnigma(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setEnigma(e.target.value));
-  }
-
-  function handleChangeNickName(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setNickName(e.target.value));
-  }
-
   return (
     <PageBackGround>
       <CenterBox>
-        <p>Room Name: {roomName}</p>
-        {/*<p>Enigma Code: {enigmaCode}</p>*/}
-        <TextField
-          fullWidth
-          label="Enigma Code"
-          placeholder={'Enter encode text here'}
-          value={enigma}
-          InputLabelProps={{ shrink: true }}
-          onChange={handleChangeEnigma}
-        ></TextField>
-        <TextField
-          fullWidth
-          label="Nick Name"
-          placeholder={'Enter nick name here'}
-          value={nickName}
-          InputLabelProps={{ shrink: true }}
-          onChange={handleChangeNickName}
-        ></TextField>
+        {/*<p>Room Name: {roomName}</p>*/}
         <ChatBox></ChatBox>
       </CenterBox>
     </PageBackGround>

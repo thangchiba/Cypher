@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { openConnection } from '../../Features/NeoSocket/NeoSocketSlice';
 import { useNavigate } from 'react-router';
 import { PageBackGround } from '../../Components/PageBackGround';
-import { CenterBox } from '../../Components/Navbar/CenterBox';
+import { CenterBox } from '../../Components/CenterBox';
 
 function Index() {
   const navigate = useNavigate();

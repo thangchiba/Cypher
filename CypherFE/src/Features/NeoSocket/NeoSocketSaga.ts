@@ -10,7 +10,7 @@ const getCurrentClient = (state: { neosocket: ConnectionState }) => state.neosoc
 function* openConnectionSaga() {
   try {
     const currentClient: NeoClient | null = yield select(getCurrentClient);
-
+    const
     if (currentClient) {
       currentClient.closeConnection();
       yield put(setConnection(null));
