@@ -4,7 +4,7 @@ import { NeoClient } from '../../Utils/NeoSocket/NeoSocketLib/NeoClient';
 
 export function useNeoConnection() {
   const [client, setClient] = useState<NeoClient | null>(null);
-  const [isConnecting, setIsConnecting] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     createNewConnection();
@@ -13,7 +13,7 @@ export function useNeoConnection() {
   function createNewConnection() {
     const newClient = new NeoClient('neosk://localhost:51994');
     newClient.onDisconnect.push(() => console.log('Disconnected with server'));
-    setIsConnecting(true);
+    setIsConnected(true);
     return newClient;
   }
 
@@ -24,9 +24,9 @@ export function useNeoConnection() {
 
   function closeConnection() {
     client?.closeConnection();
-    setIsConnecting(false);
+    setIsConnected(false);
     setClient(null);
   }
 
-  return { client, isConnecting: isConnecting, openConnection, closeConnection };
+  return { client, isConnected: isConnected, openConnection, closeConnection };
 }

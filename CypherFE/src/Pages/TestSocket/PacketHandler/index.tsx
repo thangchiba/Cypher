@@ -10,7 +10,7 @@ const MAX_SHOWING_HISTORY = 1000;
 Index.propTypes = {};
 
 function Index() {
-  const { client, isConnecting } = useSelector((state: RootState) => state.neosocket);
+  const { client, isConnected } = useSelector((state: RootState) => state.neosocket);
   useEffect(() => {
     const handlePacket = (packet: NeoPacket) => addHandledPacket(packet);
     if (client) {

@@ -1,23 +1,20 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { PageBackGround } from '../../Components/PageBackGround';
 import { CenterBox } from '../../Components/CenterBox';
-import { useDispatch, useSelector } from 'react-redux';
-import { openConnection } from '../../Features/NeoSocket/NeoSocketSlice';
-import { RootState } from '../../Redux/store';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../Redux/store';
 import { EnterChatRoomDemand } from '../../Utils/NeoSocket/NeoPackets/Test/EnterChatRoomDemand';
 import { EnterChatRoomReply } from '../../Utils/NeoSocket/NeoPackets/Test/EnterChatRoomReply';
 import ChatBox from './ChatBox';
-import { TextField } from '@mui/material';
-import { setEnigma, setNickName } from '../../Features/Chat/ChatSlice';
 
 interface RouteParams {
   roomName: string | undefined;
 }
 
 function Index() {
-  const dispatch = useDispatch();
-  const { client, isConnecting } = useSelector((redux: RootState) => redux.neosocket);
+  const dispatch = useAppDispatch();
+  const { client, isConnected } = useSelector((redux: RootState) => redux.neosocket);
   const location = useLocation();
   const { roomName } = useParams<'roomName'>();
   const getQueryStringValue = (key: string) => {
@@ -25,6 +22,8 @@ function Index() {
   };
 
   useEffect(() => {
+    // dispatch(openConnectionThunk());
+    // @ts-ignore
     dispatch(openConnection());
   }, []);
 

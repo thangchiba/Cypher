@@ -37,7 +37,7 @@ const ChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const { client, isConnecting } = useSelector((redux: RootState) => redux.neosocket);
+  const { client, isConnected } = useSelector((redux: RootState) => redux.neosocket);
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
 
   const handleReceiveMessage = useCallback(

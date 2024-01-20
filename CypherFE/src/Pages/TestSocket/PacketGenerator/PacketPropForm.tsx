@@ -9,7 +9,7 @@ import { NeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Base/NeoPacket'
 import { jsonToClassInstance } from '../../../Utils/utils';
 
 const PacketPropForm: React.FC<{ packet: CNeoPacket; jsonPacket: string }> = (props) => {
-  const { client, isConnecting } = useSelector((state: RootState) => state.neosocket);
+  const { client, isConnected } = useSelector((state: RootState) => state.neosocket);
   const { packet, jsonPacket } = props;
 
   const formik = useFormik({

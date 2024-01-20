@@ -15,6 +15,10 @@ const Index: React.FC<NavbarProps> = ({ onSettingClick }) => {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
   const dispatch = useDispatch();
 
+  function toggleTheme() {
+    dispatch(toggleDarkMode());
+  }
+
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -25,7 +29,7 @@ const Index: React.FC<NavbarProps> = ({ onSettingClick }) => {
             </Typography>
           </Grid>
           <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton color="inherit" onClick={() => dispatch(toggleDarkMode())}>
+            <IconButton color="inherit" onClick={toggleTheme}>
               {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
             <IconButton color="inherit">

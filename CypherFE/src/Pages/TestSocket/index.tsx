@@ -9,12 +9,12 @@ import PacketHandler from './PacketHandler';
 
 function Index() {
   const dispatch = useDispatch();
-  const { client, isConnecting } = useSelector((state: RootState) => state.neosocket);
+  const { client, isConnected } = useSelector((state: RootState) => state.neosocket);
 
   return (
     <Fragment>
       <ConnectionManage />
-      {isConnecting && (
+      {isConnected && (
         <>
           <Grid container spacing={2} justifyContent="space-around">
             <Grid item xs={12} md={6}>
