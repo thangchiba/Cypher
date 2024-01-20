@@ -43,12 +43,15 @@ const ChatBox: React.FC = () => {
   const handleReceiveMessage = useCallback(
     (packet: MessageDTO, context: HandleContext) => {
       console.log('Handled meesage : ', packet);
-      // const decodedChatContent = decryptMessage(packet.Content, enigma);
+      const decodedChatContent = decryptMessage(packet.Content, enigma);
+      const decodedUserName = decryptMessage(packet.UserName, enigma);
       const handleMessage: Message = {
         UserName: packet.UserName,
+        DecodedUserName: decodedUserName,
         Content: packet.Content,
-        DecodedContent: decryptMessage(packet.Content, enigma),
-        isSender: packet.UserName === nickName,
+        DecodedContent: decodedChatContent,
+        CreatedAt: packet.CreatedAt,
+        isSender: decodedUserName === nickName,
       };
       setMessages((prevState) => [...prevState, handleMessage]);
     },
@@ -64,10 +67,12 @@ const ChatBox: React.FC = () => {
     console.log('redecode');
     const decryptedMessages = messages.map((message) => {
       const decryptedMessage = decryptMessage(message.Content, enigma);
+      const decryptedUserName = decryptMessage(message.UserName, enigma);
       console.log({ decryptedMessage });
       return {
         ...message,
         DecodedContent: decryptedMessage,
+        DecodedUserName: decryptedUserName,
       };
     });
     console.log(decryptedMessages);
@@ -78,7 +83,7 @@ const ChatBox: React.FC = () => {
 
   useEffect(() => {
     const newMessages = messages.map((message) => {
-      const isSender = message.UserName === nickName;
+      const isSender = message.DecodedUserName === nickName;
       return {
         ...message,
         isSender,
@@ -91,8 +96,9 @@ const ChatBox: React.FC = () => {
     e.preventDefault();
     if (input.trim()) {
       const encodedChatContent = encryptMessage(input, enigma);
+      const encodedUserName = encryptMessage(nickName, enigma);
       const newMessage: MessageDTO = new MessageDTO();
-      newMessage.UserName = nickName;
+      newMessage.UserName = encodedUserName;
       newMessage.Content = encodedChatContent;
       // setMessages([...messages, newMessage]);
       setInput('');
@@ -107,7 +113,7 @@ const ChatBox: React.FC = () => {
           {messages.map(
             (message, index) =>
               message.DecodedContent && (
-                <ListItem
+                <Box
                   key={`message${index}`}
                   sx={{
                     paddingInline: 0,
@@ -116,7 +122,7 @@ const ChatBox: React.FC = () => {
                   }}
                 >
                   <MessageItem message={message} />
-                </ListItem>
+                </Box>
               ),
           )}
         </List>

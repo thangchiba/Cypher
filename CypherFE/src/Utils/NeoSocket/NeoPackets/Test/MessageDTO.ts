@@ -7,4 +7,6 @@ export class MessageDTO extends NeoPacket {
   public UserName: string = '';
   @DKey(1)
   public Content: string = '';
+  @DKey(2)
+  public CreatedAt: Date = new Date();
 }
