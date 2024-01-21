@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from 'react';
 import { Divider, Drawer, Stack, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../Redux/store';
-import { setEnigma, setNickName } from '../../Features/Chat/ChatSlice';
+import { RootState, useAppDispatch } from '../../Redux/store';
+import { updateEnigma, updateNickName } from '../../Features/Chat/ChatSlice';
 
 type SidebarProps = {
   open: boolean;
@@ -11,14 +11,14 @@ type SidebarProps = {
 
 const Index: React.FC<SidebarProps> = ({ open, onClose }) => {
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   function handleChangeEnigma(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setEnigma(e.target.value));
+    dispatch(updateEnigma(e.target.value));
   }
 
   function handleChangeNickName(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setNickName(e.target.value));
+    dispatch(updateNickName(e.target.value));
   }
 
   return (

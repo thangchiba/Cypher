@@ -1,5 +1,7 @@
 // chatSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { setMessages } from '../Message/MessageSlice';
+import { decryptAndMapMessage } from '../../Utils/convertMessage';
 
 interface ChatSlice {
   enigma: string;
@@ -27,3 +29,34 @@ const chatSlice = createSlice({
 export const { setEnigma, setNickName } = chatSlice.actions;
 
 export default chatSlice.reducer;
+
+export const updateEnigma = createAsyncThunk('chat/updateEnigma', async (newEnigma: string, thunkAPI) => {
+  try {
+    thunkAPI.dispatch(setEnigma(newEnigma));
+    const currentState = thunkAPI.getState();
+    const updatedMessages = updateMessages(currentState);
+    thunkAPI.dispatch(setMessages(updatedMessages));
+  } catch (error) {
+    console.error(error);
+  }
+});
+export const updateNickName = createAsyncThunk('chat/updateNickName', async (nickName: string, thunkAPI) => {
+  try {
+    thunkAPI.dispatch(setNickName(nickName));
+    const currentState = thunkAPI.getState();
+    const updatedMessages = updateMessages(currentState);
+    thunkAPI.dispatch(setMessages(updatedMessages));
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// Helper function to get updated messages
+function updateMessages(currentState: any): Message[] {
+  const messages = currentState.messages.messages;
+  const nickName = currentState.chat.nickName;
+  const enigma = currentState.chat.enigma;
+  return messages.map((message: Message) => {
+    return decryptAndMapMessage(message, enigma, nickName);
+  });
+}

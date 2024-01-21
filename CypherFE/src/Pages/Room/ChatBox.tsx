@@ -1,12 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Grid, List, ListItem, styled, TextField, Theme } from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import { Box, Button, Grid, List, styled, TextField, Theme } from '@mui/material';
 import { MessageDTO } from '../../Utils/NeoSocket/NeoPackets/Test/MessageDTO';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../Redux/store';
+import { RootState, useAppDispatch } from '../../Redux/store';
 import { HandleContext } from '../../Utils/NeoSocket/NeoSocketLib/Base/HandleContext';
 import useHandler from '../../Utils/NeoSocket/CustomHook/useHandler';
 import { MessageItem } from './MessageItem';
-import { decryptMessage, encryptMessage } from '../../Utils/utilsTS';
+import { encryptMessage } from '../../Utils/utilsTS';
+import { mapDTOToMessage } from '../../Utils/convertMessage';
+import { addMessage } from '../../Features/Message/MessageSlice';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBottom: '1px solid',
@@ -35,25 +37,16 @@ const ChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
 }));
 
 const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const messages = useSelector((redux: RootState) => redux.messages.messages);
+  const dispatch = useAppDispatch();
   const [input, setInput] = useState('');
   const { client, isConnected } = useSelector((redux: RootState) => redux.neosocket);
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
 
   const handleReceiveMessage = useCallback(
     (packet: MessageDTO, context: HandleContext) => {
-      console.log('Handled meesage : ', packet);
-      const decodedChatContent = decryptMessage(packet.Content, enigma);
-      const decodedUserName = decryptMessage(packet.UserName, enigma);
-      const handleMessage: Message = {
-        UserName: packet.UserName,
-        DecodedUserName: decodedUserName,
-        Content: packet.Content,
-        DecodedContent: decodedChatContent,
-        CreatedAt: packet.CreatedAt,
-        isSender: decodedUserName === nickName,
-      };
-      setMessages((prevState) => [...prevState, handleMessage]);
+      const newMessage = mapDTOToMessage(packet, enigma, nickName);
+      dispatch(addMessage(newMessage));
     },
     [enigma, nickName],
   );
@@ -61,36 +54,6 @@ const ChatBox: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
-
-  useEffect(() => {
-    // Create a new array of messages with decrypted content
-    console.log('redecode');
-    const decryptedMessages = messages.map((message) => {
-      const decryptedMessage = decryptMessage(message.Content, enigma);
-      const decryptedUserName = decryptMessage(message.UserName, enigma);
-      console.log({ decryptedMessage });
-      return {
-        ...message,
-        DecodedContent: decryptedMessage,
-        DecodedUserName: decryptedUserName,
-      };
-    });
-    console.log(decryptedMessages);
-
-    // Update the state with the new array of decrypted messages
-    setMessages(decryptedMessages);
-  }, [enigma]);
-
-  useEffect(() => {
-    const newMessages = messages.map((message) => {
-      const isSender = message.DecodedUserName === nickName;
-      return {
-        ...message,
-        isSender,
-      };
-    });
-    setMessages(newMessages);
-  }, [nickName]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();

@@ -4,6 +4,7 @@ import chatReducer from '../Features/Chat/ChatSlice';
 import themeReducer from '../Features/Theme/ThemeSlice';
 import NSReducer from '../Features/NeoSocket/NeoSocketSlice';
 import { useDispatch } from 'react-redux';
+import messageSlice from '../Features/Message/MessageSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     chat: chatReducer,
     theme: themeReducer,
     neosocket: NSReducer,
+    messages: messageSlice,
   },
 });
 
