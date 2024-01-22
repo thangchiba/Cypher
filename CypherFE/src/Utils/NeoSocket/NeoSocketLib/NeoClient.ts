@@ -1,4 +1,3 @@
-import { OPEN } from 'ws';
 import { NeoPacket } from './Base/NeoPacket';
 import { PacketProcessFactory } from './Factory/PacketProcessFactory';
 import { PacketHandleFactory } from './Factory/PacketHandleFactory';
@@ -62,20 +61,22 @@ export class NeoClient {
     });
   }
 
-  public sendMessage(message: string) {
-    if (this.socket.readyState === OPEN) {
-      this.socket.send(message);
-    } else {
-      console.error('Cannot send message, connection is not open');
+  public command(packet: NeoPacket) {
+    try {
+      this.senderFactory.command(packet);
+    } catch (error) {
+      console.error('Error sending command:', error);
+      throw error; // Rethrowing the error to be handled by the caller
     }
   }
 
-  public command(packet: NeoPacket) {
-    this.senderFactory.command(packet);
-  }
-
   public commands(packets: NeoPacket[]) {
-    this.senderFactory.commands(packets);
+    try {
+      this.senderFactory.commands(packets);
+    } catch (error) {
+      console.error('Error sending commands:', error);
+      throw error; // Rethrowing the error to be handled by the caller
+    }
   }
 
   public demand(packet: NeoPacket, maxWaitTime: number = 30000): Promise<any> {
@@ -83,10 +84,15 @@ export class NeoClient {
       setTimeout(() => reject(new Error('Request timed out')), maxWaitTime);
     });
 
-    return Promise.race([this.senderFactory.demand(packet), timeout]);
+    try {
+      return Promise.race([this.senderFactory.demand(packet), timeout]);
+    } catch (error) {
+      console.error('Error with demand:', error);
+      throw error;
+    }
   }
 
-  public send(packet: NeoPacket, maxWaitTime: number = 30000): any {
+  public send(packet: NeoPacket, maxWaitTime: number = 3000): any {
     if (packet instanceof DemandPacket) {
       return this.senderFactory.demand(packet);
     } else {
@@ -107,6 +113,7 @@ export class NeoClient {
       this.socket.send(buffer);
     } else {
       console.error('Cannot send message, connection is not open');
+      throw new Error('Cannot send data, connection is not open');
     }
   }
 

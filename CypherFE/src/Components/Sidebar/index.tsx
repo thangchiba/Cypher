@@ -5,6 +5,7 @@ import NickNameTextField from '../Setup/NickNameTextField';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../Redux/store';
 import { setOpenSetting } from '../../Features/App/AppSlice';
+import SaveOnLocalCB from '../Setup/SaveOnLocalCB';
 
 type SidebarProps = {
   // open: boolean;
@@ -38,6 +39,8 @@ const Index: React.FC<SidebarProps> = (props) => {
         <EnigmaTextField />
         <Divider />
         <NickNameTextField />
+        <Divider />
+        <SaveOnLocalCB />
       </Stack>
     </Drawer>
   );

@@ -23,7 +23,7 @@ export function mapDTOToMessage(messageDTO: MessageDTO, enigma: string, nickName
     DecodedUserName: decodedUserName,
     Content: messageDTO.Content,
     DecodedContent: decodedChatContent,
-    CreatedAt: messageDTO.CreatedAt,
+    CreatedAt: messageDTO.CreatedAt.toISOString(),
     isSender: decodedUserName === nickName,
   };
 }
@@ -37,7 +37,7 @@ export function mapDTOsToMessage(messageDTOs: MessageDTO[], enigma: string, nick
       DecodedUserName: decodedUserName,
       Content: messageDTO[1],
       DecodedContent: decodedChatContent,
-      CreatedAt: messageDTO[2],
+      CreatedAt: messageDTO[2].toISOString(),
       isSender: decodedUserName === nickName,
     };
   });

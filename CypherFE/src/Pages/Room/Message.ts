@@ -3,6 +3,6 @@ interface Message {
   DecodedUserName: string;
   Content: string;
   DecodedContent: string;
-  CreatedAt: Date;
+  CreatedAt: string;
   isSender: boolean;
 }

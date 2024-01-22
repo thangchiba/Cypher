@@ -2,17 +2,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setMessages } from '../Message/MessageSlice';
 import { decryptAndMapMessage } from '../../Utils/convertMessage';
+import { RootState } from '../../Redux/store';
 
 interface ChatSlice {
   roomName: string;
   enigma: string;
   nickName: string;
+  saveOnLocalStorage: boolean;
 }
 
 const initialState: ChatSlice = {
   roomName: '',
-  enigma: '',
-  nickName: '',
+  enigma: localStorage.getItem('enigma') || '',
+  nickName: localStorage.getItem('nickName') || '',
+  saveOnLocalStorage: localStorage.getItem('saveOnLocalStorage') === 'true',
 };
 
 const chatSlice = createSlice({
@@ -28,19 +31,26 @@ const chatSlice = createSlice({
     setRoomName: (state, action: PayloadAction<string>) => {
       state.roomName = action.payload;
     },
+    toggleSaveOnLocalStorage: (state) => {
+      state.saveOnLocalStorage = !state.saveOnLocalStorage;
+      localStorage.setItem('saveOnLocalStorage', state.saveOnLocalStorage.toString());
+    },
   },
 });
 
-export const { setEnigma, setNickName, setRoomName } = chatSlice.actions;
+export const { setEnigma, setNickName, setRoomName, toggleSaveOnLocalStorage } = chatSlice.actions;
 
 export default chatSlice.reducer;
 
 export const updateEnigma = createAsyncThunk('chat/updateEnigma', async (newEnigma: string, thunkAPI) => {
   try {
     thunkAPI.dispatch(setEnigma(newEnigma));
-    const currentState = thunkAPI.getState();
+    const currentState: RootState = thunkAPI.getState() as RootState;
     const updatedMessages = updateMessages(currentState);
     thunkAPI.dispatch(setMessages(updatedMessages));
+    if (currentState.chat.saveOnLocalStorage) {
+      localStorage.setItem('enigma', newEnigma);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -48,9 +58,12 @@ export const updateEnigma = createAsyncThunk('chat/updateEnigma', async (newEnig
 export const updateNickName = createAsyncThunk('chat/updateNickName', async (nickName: string, thunkAPI) => {
   try {
     thunkAPI.dispatch(setNickName(nickName));
-    const currentState = thunkAPI.getState();
+    const currentState: RootState = thunkAPI.getState() as RootState;
     const updatedMessages = updateMessages(currentState);
     thunkAPI.dispatch(setMessages(updatedMessages));
+    if (currentState.chat.saveOnLocalStorage) {
+      localStorage.setItem('nickName', nickName);
+    }
   } catch (error) {
     console.error(error);
   }
