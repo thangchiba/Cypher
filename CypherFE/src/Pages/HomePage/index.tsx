@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Stack, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Field, Form, Formik } from 'formik';
@@ -8,17 +8,18 @@ import { CenterBox } from '../../Components/CenterBox';
 import NeonAvatar from '../../Components/NeonAvatar';
 // @ts-ignore
 import avatar from '../../Static/Images/Logo/cypherLogo.png';
-import { RootState } from '../../Redux/store';
+import { RootState, useAppDispatch } from '../../Redux/store';
 import { useSelector } from 'react-redux';
 import EnigmaTextField from '../../Components/Setup/EnigmaTextField';
 import NickNameTextField from '../../Components/Setup/NickNameTextField';
+import { toast } from 'react-toastify';
+import { setRoomName } from '../../Features/Chat/ChatSlice';
 
 function Index() {
   const navigate = useNavigate();
-  const [roomName, setRoomName] = useState('');
+  const dispatch = useAppDispatch();
   const theme = useSelector((state: RootState) => state.theme);
   return (
-    // <Modal open={true}>
     <PageBackGround>
       <CenterBox width={400}>
         {/*//Create a frame with Box MUI component that child is centered*/}
@@ -28,8 +29,13 @@ function Index() {
         <Formik
           initialValues={{ roomName: '' }}
           onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
-            navigate(`/room/${values.roomName}`);
+            const { roomName } = values;
+            if (!roomName) {
+              toast.error('Room name is not valid!');
+            } else {
+              dispatch(setRoomName(roomName));
+              navigate(`/room/${values.roomName}`);
+            }
             setSubmitting(false);
           }}
         >
@@ -56,7 +62,6 @@ function Index() {
         </Formik>
       </CenterBox>
     </PageBackGround>
-    // </Modal>
   );
 }
 

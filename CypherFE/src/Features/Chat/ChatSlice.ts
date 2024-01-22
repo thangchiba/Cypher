@@ -4,11 +4,13 @@ import { setMessages } from '../Message/MessageSlice';
 import { decryptAndMapMessage } from '../../Utils/convertMessage';
 
 interface ChatSlice {
+  roomName: string;
   enigma: string;
   nickName: string;
 }
 
 const initialState: ChatSlice = {
+  roomName: '',
   enigma: '',
   nickName: '',
 };
@@ -23,10 +25,13 @@ const chatSlice = createSlice({
     setNickName: (state, action: PayloadAction<string>) => {
       state.nickName = action.payload;
     },
+    setRoomName: (state, action: PayloadAction<string>) => {
+      state.roomName = action.payload;
+    },
   },
 });
 
-export const { setEnigma, setNickName } = chatSlice.actions;
+export const { setEnigma, setNickName, setRoomName } = chatSlice.actions;
 
 export default chatSlice.reducer;
 

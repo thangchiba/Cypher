@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import NotFound from './Pages/NotFound';
 import Navbar from './Components/Navbar';
 import Box from '@mui/material/Box';
@@ -27,8 +27,9 @@ function App() {
         <Sidebar />
         <Box component="main" sx={{ flexGrow: 1, width: '100%' }}>
           <Routes>
-            <Route index element={<HomePage />} />
-            {/*<Route index element={<div>This is the home page</div>} />*/}
+            {/*<Route index element={<HomePage />} />*/}
+            <Route path="/" element={<Navigate to="/lobby" replace />} />
+            <Route path="/lobby" element={<HomePage />} />
             <Route path="/room/:roomName" element={<Room />} />
             <Route path="test-socket" element={<TestSocket />} />
             <Route path="about" element={<div>hi</div>} />

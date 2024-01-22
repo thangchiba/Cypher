@@ -4,19 +4,21 @@ import { PacketProcessFactory } from './Factory/PacketProcessFactory';
 import { PacketHandleFactory } from './Factory/PacketHandleFactory';
 import { SenderFactory } from './Factory/SenderFactory';
 import { DemandPacket } from './Base/DemandPacket';
+import { v4 as uuidv4 } from 'uuid';
 
 type DisconnectCallback = () => void;
-type OpenCallback = () => void;
+type ConnectCallBack = () => void;
 type OnHandle = (packet: NeoPacket) => void;
 
 export class NeoClient {
+  public clientId: string = '';
   public socket: WebSocket;
   private count: number = 0;
   public packetHandleFactory: PacketHandleFactory;
   public senderFactory: SenderFactory;
   public packetProcessFactory: PacketProcessFactory;
   public onDisconnect: DisconnectCallback[] = [];
-  public onOpen: OpenCallback[] = [];
+  public onConnect: ConnectCallBack[] = [];
   public onHandle: OnHandle[] = [];
 
   constructor(url: string) {
@@ -26,6 +28,7 @@ export class NeoClient {
     this.senderFactory = new SenderFactory(this);
     this.packetProcessFactory = new PacketProcessFactory(this);
     this.packetHandleFactory = new PacketHandleFactory(this);
+    this.clientId = uuidv4();
   }
 
   private solveURL(inputUrl: string): string {
@@ -42,7 +45,7 @@ export class NeoClient {
   private registerEventListeners() {
     this.socket.addEventListener('open', () => {
       console.log('Connected to the WebSocket server');
-      this.onOpen.forEach((callback) => callback());
+      this.onConnect.forEach((callback) => callback());
     });
 
     this.socket.addEventListener('message', async (event) => {
@@ -132,7 +135,7 @@ export class NeoClient {
   }
 
   private dispose() {
-    if (this.socket.readyState === WebSocket.OPEN) {
+    if (this.socket?.readyState === WebSocket.OPEN) {
       this.socket.close();
       this.onDisconnect.forEach((callback) => callback());
     }
@@ -140,5 +143,16 @@ export class NeoClient {
 
   private receivePacket(data: ArrayBuffer) {
     this.packetHandleFactory.handle(new Uint8Array(data.slice(2)));
+  }
+
+  public getReadyState() {
+    return this.socket?.readyState;
+  }
+
+  public reconnect() {
+    this.closeConnection();
+    this.socket = new WebSocket(this.socket.url);
+    this.registerEventListeners();
+    this.clientId = uuidv4();
   }
 }

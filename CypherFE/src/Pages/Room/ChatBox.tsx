@@ -9,13 +9,18 @@ import { MessageItem } from './MessageItem';
 import { encryptMessage } from '../../Utils/utilsTS';
 import { mapDTOToMessage } from '../../Utils/convertMessage';
 import { addMessage } from '../../Features/Message/MessageSlice';
+import ThemeToggleButton from '../../Components/Setup/ThemeToggleButton';
+import SettingsButton from '../../Components/Setup/SettingsButton';
+import HomeButton from '../../Components/HomeButton';
+import Client from '../../API/Client';
+import ReconnectButton from '../../Components/ReconnectButton';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBottom: '1px solid',
   borderColor: theme.palette.mode === 'dark' ? 'orange' : theme.palette.primary.light,
   overflowY: 'scroll',
   // overFlowX: 'hidden',
-  height: '88%',
+  height: '84%',
   display: 'flex',
   flexDirection: 'column-reverse',
   // Hide scrollbar for Chrome, Safari and other WebKit browsers
@@ -29,17 +34,32 @@ const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
 }));
 
 const ChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
+  // position: 'absolute',
   display: 'flex',
   justifyContent: 'flex-end',
   bottom: 0,
   marginTop: 12,
+  height: '5%',
+}));
+
+const FloatingBar = styled(Box)(({ theme }: { theme: Theme }) => ({
+  // position: 'sticky',
+  display: 'flex',
+  justifyContent: 'space-around',
+  top: 0,
+  padding: 0,
+  margin: 0,
+  height: '5%',
+}));
+const ChatBoxFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
+  // position: 'relative',
+  // height: '100%',
 }));
 
 const ChatBox: React.FC = () => {
   const messages = useSelector((redux: RootState) => redux.messages.messages);
   const dispatch = useAppDispatch();
   const [input, setInput] = useState('');
-  const { client, isConnected } = useSelector((redux: RootState) => redux.neosocket);
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
 
   const handleReceiveMessage = useCallback(
@@ -64,12 +84,19 @@ const ChatBox: React.FC = () => {
       newMessage.Content = encodedChatContent;
       // setMessages([...messages, newMessage]);
       setInput('');
-      client?.command(newMessage);
+      console.log('Send by client id : ', Client?.clientId, newMessage);
+      Client?.command(newMessage);
     }
   };
 
   return (
     <>
+      <FloatingBar>
+        <HomeButton />
+        <ThemeToggleButton />
+        <ReconnectButton />
+        <SettingsButton />
+      </FloatingBar>
       <MessagesFrame>
         <List>
           {messages.map(
