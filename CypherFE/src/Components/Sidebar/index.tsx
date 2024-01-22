@@ -2,13 +2,23 @@ import React from 'react';
 import { Divider, Drawer, Stack, Typography } from '@mui/material';
 import EnigmaTextField from '../Setup/EnigmaTextField';
 import NickNameTextField from '../Setup/NickNameTextField';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../Redux/store';
+import { setOpenSetting } from '../../Features/App/AppSlice';
 
 type SidebarProps = {
-  open: boolean;
-  onClose: () => void;
+  // open: boolean;
+  // onClose: () => void;
 };
 
-const Index: React.FC<SidebarProps> = ({ open, onClose }) => {
+const Index: React.FC<SidebarProps> = (props) => {
+  const open = useSelector((state: RootState) => state.app.openSetting);
+  const dispatch = useAppDispatch();
+
+  function onClose() {
+    dispatch(setOpenSetting(!open));
+  }
+
   return (
     <Drawer
       // variant="persistent"

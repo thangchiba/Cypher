@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import NotFound from './Pages/NotFound';
 import Navbar from './Components/Navbar';
@@ -16,20 +16,15 @@ import Room from './Pages/Room';
 import Sidebar from './Components/Sidebar';
 
 function App() {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
   const theme = useMemo(() => getTheme(darkMode), [darkMode]);
-
-  const toggleSetting = () => {
-    setSidebarOpen((prevValue) => !prevValue);
-  };
 
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Navbar onSettingClick={toggleSetting} />
-        <Sidebar open={isSidebarOpen} onClose={toggleSetting} />
+        <Navbar />
+        <Sidebar />
         <Box component="main" sx={{ flexGrow: 1, width: '100%' }}>
           <Routes>
             <Route index element={<HomePage />} />
