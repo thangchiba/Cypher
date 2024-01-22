@@ -5,7 +5,8 @@ import { RootState } from '../../Redux/store';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { toggleDarkMode } from '../../Features/Theme/ThemeSlice'; // Import the settings icon
+import { toggleDarkMode } from '../../Features/Theme/ThemeSlice';
+import Box from '@mui/material/Box'; // Import the settings icon
 
 type NavbarProps = {
   onSettingClick: () => void;
@@ -20,25 +21,27 @@ const Index: React.FC<NavbarProps> = ({ onSettingClick }) => {
   }
 
   return (
-    <AppBar position="fixed">
-      <Toolbar>
-        <Grid container>
-          <Grid item xs={9}>
-            <Typography variant="h6" noWrap>
-              Cypher
-            </Typography>
+    <Box display={{ xs: 'none', md: 'block', marginBottom: '64px' }}>
+      <AppBar position="fixed">
+        <Toolbar>
+          <Grid container>
+            <Grid item xs={9}>
+              <Typography variant="h6" noWrap>
+                Cypher
+              </Typography>
+            </Grid>
+            <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <IconButton color="inherit" onClick={toggleTheme}>
+                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+              <IconButton color="inherit">
+                <SettingsIcon onClick={onSettingClick} />
+              </IconButton>
+            </Grid>
           </Grid>
-          <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton color="inherit" onClick={toggleTheme}>
-              {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
-            <IconButton color="inherit">
-              <SettingsIcon onClick={onSettingClick} />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 

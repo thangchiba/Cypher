@@ -15,7 +15,9 @@ export const openConnection = createAsyncThunk('neosocket/openConnection', async
     thunkAPI.dispatch(setConnection(null));
   }
 
-  const newClient = new NeoClient('neosks://192.168.1.74/websocket');
+  // const newClient = new NeoClient('neosks://192.168.1.74/websocket');
+  // const newClient = new NeoClient('neosk://localhost:51994');
+  const newClient = new NeoClient('neosks://api.thangchiba.com/websocket');
   newClient.onDisconnect.push(() => {
     toast.warning('Disconnected NeoSocket Server!');
     thunkAPI.dispatch(onDisconnect());

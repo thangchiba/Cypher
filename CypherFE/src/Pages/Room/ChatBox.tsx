@@ -14,17 +14,16 @@ const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBottom: '1px solid',
   borderColor: theme.palette.mode === 'dark' ? 'orange' : theme.palette.primary.light,
   overflowY: 'scroll',
-  height: '85%',
+  // overFlowX: 'hidden',
+  height: '88%',
   display: 'flex',
   flexDirection: 'column-reverse',
   // Hide scrollbar for Chrome, Safari and other WebKit browsers
   '&::-webkit-scrollbar': {
     display: 'none',
   },
-
   // Hide scrollbar for Firefox
   scrollbarWidth: 'none',
-
   // Optional: for Internet Explorer and Edge
   '-ms-overflow-style': 'none',
 }));
@@ -33,7 +32,7 @@ const ChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   display: 'flex',
   justifyContent: 'flex-end',
   bottom: 0,
-  marginTop: 10,
+  marginTop: 12,
 }));
 
 const ChatBox: React.FC = () => {
@@ -82,6 +81,7 @@ const ChatBox: React.FC = () => {
                     paddingInline: 0,
                     display: 'flex',
                     justifyContent: message.isSender ? 'flex-end' : 'flex-start',
+                    mt: 1,
                   }}
                 >
                   <MessageItem message={message} />
@@ -93,11 +93,11 @@ const ChatBox: React.FC = () => {
       <ChatFormFrame>
         <form onSubmit={(e: React.FormEvent) => handleSend(e)} style={{ width: '100%' }}>
           <Grid container sx={{ height: 40 }}>
-            <Grid item xs={9}>
+            <Grid item xs={9} md={10}>
               <TextField fullWidth variant="outlined" value={input} onChange={handleInputChange} placeholder="Type a message" />
             </Grid>
             <Grid item xs={0.5}></Grid>
-            <Grid item xs={2.5} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+            <Grid item xs={2.5} md={1.5} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Button type={'submit'} variant="contained" color="primary" fullWidth sx={{ height: '100%', borderRadius: 5 }}>
                 Send
               </Button>

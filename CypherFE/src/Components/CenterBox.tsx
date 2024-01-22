@@ -1,11 +1,19 @@
 import { styled } from '@mui/material';
 import Box from '@mui/material/Box';
 
-export const CenterBox = styled(Box)(({ theme: Theme }) => ({
+type CenterBoxProps = {
+  width?: number;
+};
+
+export const CenterBox = styled(Box)<CenterBoxProps>(({ theme, width = 1000 }) => ({
   height: 600,
-  width: 400,
+  width: width,
+  [theme.breakpoints.down('sm')]: {
+    height: '90%',
+    width: 400,
+  },
   border: '1px solid',
-  borderColor: Theme.palette.mode === 'light' ? 'blue' : 'orange',
+  borderColor: theme.palette.mode === 'light' ? 'blue' : 'orange',
   borderRadius: 15,
   padding: 15,
 }));

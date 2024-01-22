@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { Stack, styled, Typography } from '@mui/material';
 import { ListItemProps } from '@mui/material/ListItem';
 import { Box } from '@mui/system';
 import { formatDateToCustomString } from '../../Utils/dateConvert';
@@ -8,15 +8,16 @@ interface StyledMessageItemProps extends ListItemProps {
   isSender: boolean;
 }
 
-const StyledMessageItem = styled(Box)<StyledMessageItemProps>(({ theme, isSender }) => ({
-  // marginTop: 10,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-end',
-  width: '60%',
+const StyledMessageItem = styled(Stack)<StyledMessageItemProps>(({ theme, isSender }) => ({
+  textAlign: isSender ? 'right' : 'left',
+  alignItems: isSender ? 'flex-end' : 'flex-start',
+  width: '100%',
 }));
 
-const StyledContentBox = styled(Box)<StyledMessageItemProps>(({ theme, isSender }) => ({
+const StyledMessageContent = styled(Box)<StyledMessageItemProps>(({ theme, isSender }) => ({
+  maxWidth: '70%',
+  display: 'inline-block',
+  width: 'fit-content',
   height: '100%',
   backgroundColor: isSender ? (theme.palette.mode === 'dark' ? 'darkorange' : 'lightblue') : theme.palette.mode === 'dark' ? 'darkgrey' : 'lightgrey',
   '& .MuiListItemText-root': {
@@ -27,16 +28,23 @@ const StyledContentBox = styled(Box)<StyledMessageItemProps>(({ theme, isSender 
   borderRadius: '10px',
 }));
 
+const StyledMessageHeader = styled(Box)(({ theme }) => ({
+  marginBotton: '1px',
+  fontSize: '0.8rem',
+}));
+
 // MessageItem component
 export const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
   return (
     <>
       <StyledMessageItem isSender={message.isSender}>
-        <div style={{ marginBottom: '1px', textAlign: message.isSender ? 'right' : 'left' }}>
-          {!message.isSender ? `${message.DecodedUserName} - ` : ``}
+        <StyledMessageHeader>
+          {!message.isSender ? `${message.DecodedUserName || 'Anonymous'} - ` : ``}
           {formatDateToCustomString(message.CreatedAt)}
-        </div>
-        <StyledContentBox isSender={message.isSender}>{message.DecodedContent}</StyledContentBox>
+        </StyledMessageHeader>
+        <StyledMessageContent isSender={message.isSender}>
+          <Typography>{message.DecodedContent}</Typography>
+        </StyledMessageContent>
       </StyledMessageItem>
     </>
   );

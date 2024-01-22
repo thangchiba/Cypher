@@ -30,7 +30,7 @@ function App() {
         <CssBaseline />
         <Navbar onSettingClick={toggleSetting} />
         <Sidebar open={isSidebarOpen} onClose={toggleSetting} />
-        <Box component="main" sx={{ flexGrow: 1, p: 1, width: '100%', mt: '64px' }}>
+        <Box component="main" sx={{ flexGrow: 1, width: '100%' }}>
           <Routes>
             <Route index element={<HomePage />} />
             {/*<Route index element={<div>This is the home page</div>} />*/}

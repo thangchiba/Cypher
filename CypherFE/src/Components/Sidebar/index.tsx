@@ -1,8 +1,7 @@
-import React, { ChangeEvent } from 'react';
-import { Divider, Drawer, Stack, TextField, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../Redux/store';
-import { updateEnigma, updateNickName } from '../../Features/Chat/ChatSlice';
+import React from 'react';
+import { Divider, Drawer, Stack, Typography } from '@mui/material';
+import EnigmaTextField from '../Setup/EnigmaTextField';
+import NickNameTextField from '../Setup/NickNameTextField';
 
 type SidebarProps = {
   open: boolean;
@@ -10,17 +9,6 @@ type SidebarProps = {
 };
 
 const Index: React.FC<SidebarProps> = ({ open, onClose }) => {
-  const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
-  const dispatch = useAppDispatch();
-
-  function handleChangeEnigma(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(updateEnigma(e.target.value));
-  }
-
-  function handleChangeNickName(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(updateNickName(e.target.value));
-  }
-
   return (
     <Drawer
       // variant="persistent"
@@ -37,24 +25,9 @@ const Index: React.FC<SidebarProps> = ({ open, onClose }) => {
           Settings
         </Typography>
         <Divider />
-        <TextField
-          fullWidth
-          label="Enigma Code"
-          placeholder={'Enter encode text here'}
-          value={enigma}
-          InputLabelProps={{ shrink: true }}
-          onChange={handleChangeEnigma}
-          // helperText={'Notice : users need same code to be decrypt have meaning message'}
-        ></TextField>
+        <EnigmaTextField />
         <Divider />
-        <TextField
-          fullWidth
-          label="Nick Name"
-          placeholder={'Enter nick name here'}
-          value={nickName}
-          InputLabelProps={{ shrink: true }}
-          onChange={handleChangeNickName}
-        ></TextField>
+        <NickNameTextField />
       </Stack>
     </Drawer>
   );
