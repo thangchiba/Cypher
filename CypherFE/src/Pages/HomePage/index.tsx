@@ -42,18 +42,10 @@ function Index() {
           {({ isSubmitting }) => (
             <Form>
               <Stack spacing={3}>
-                <Field
-                  color={theme.darkMode ? 'warning' : 'primary'}
-                  name="roomName"
-                  as={TextField}
-                  label="Room Name"
-                  placeholder="Enter Room Name Here"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
+                <Field name="roomName" as={TextField} label="Room Name" placeholder="Enter Room Name Here" fullWidth InputLabelProps={{ shrink: true }} />
                 <EnigmaTextField />
                 <NickNameTextField />
-                <Button type="submit" variant="outlined" color={theme.darkMode ? 'warning' : 'primary'} disabled={isSubmitting} sx={{ mt: 3 }} fullWidth>
+                <Button type="submit" variant="outlined" disabled={isSubmitting} sx={{ mt: 3 }} fullWidth>
                   Submit
                 </Button>
               </Stack>

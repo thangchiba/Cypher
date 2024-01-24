@@ -14,6 +14,7 @@ import SettingsButton from '../../Components/Setup/SettingsButton';
 import HomeButton from '../../Components/HomeButton';
 import Client from '../../API/Client';
 import ReconnectButton from '../../Components/ReconnectButton';
+import useScroll from './useScroll';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBottom: '1px solid',
@@ -61,7 +62,7 @@ const ChatBox: React.FC = () => {
   const dispatch = useAppDispatch();
   const [input, setInput] = useState('');
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
-
+  const { messagesEndRef } = useScroll();
   const handleReceiveMessage = useCallback(
     (packet: MessageDTO, context: HandleContext) => {
       const newMessage = mapDTOToMessage(packet, enigma, nickName);
@@ -115,6 +116,7 @@ const ChatBox: React.FC = () => {
                 </Box>
               ),
           )}
+          <div ref={messagesEndRef} />
         </List>
       </MessagesFrame>
       <ChatFormFrame>
@@ -125,7 +127,7 @@ const ChatBox: React.FC = () => {
             </Grid>
             <Grid item xs={0.5}></Grid>
             <Grid item xs={2.5} md={1.5} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Button type={'submit'} variant="contained" color="primary" fullWidth sx={{ height: '100%', borderRadius: 5 }}>
+              <Button type={'submit'} variant="contained" fullWidth sx={{ height: '100%', borderRadius: 5 }}>
                 Send
               </Button>
             </Grid>
