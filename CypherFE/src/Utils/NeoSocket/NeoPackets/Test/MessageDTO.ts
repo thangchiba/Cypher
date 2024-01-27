@@ -1,7 +1,7 @@
 import { DKey } from '../../NeoSocketLib/Decorator/DKey';
 import { DNeoPacket } from '../../NeoSocketLib/Decorator/DNeoPacket';
 import { NeoPacket } from '../../NeoSocketLib/Base/NeoPacket';
-@DNeoPacket()
+@DNeoPacket(0, 'MessageDTO')
 export class MessageDTO extends NeoPacket {
   @DKey(0)
   public UserName: string = '';

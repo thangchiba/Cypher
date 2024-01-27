@@ -9,7 +9,6 @@ interface StyledMessageItemProps extends ListItemProps {
 }
 
 const StyledMessageItem = styled(Stack)<StyledMessageItemProps>(({ theme, isSender }) => ({
-  textAlign: isSender ? 'right' : 'left',
   alignItems: isSender ? 'flex-end' : 'flex-start',
   width: '100%',
 }));
@@ -26,8 +25,8 @@ const StyledMessageContent = styled(Box)<StyledMessageItemProps>(({ theme, isSen
   },
   padding: '5px 10px',
   borderRadius: '10px',
+  textAlign: 'left',
 }));
-
 const StyledMessageHeader = styled(Box)(({ theme }) => ({
   marginBotton: '1px',
   fontSize: '0.8rem',

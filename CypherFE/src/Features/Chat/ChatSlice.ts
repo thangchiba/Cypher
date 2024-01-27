@@ -34,6 +34,13 @@ const chatSlice = createSlice({
     toggleSaveOnLocalStorage: (state) => {
       state.saveOnLocalStorage = !state.saveOnLocalStorage;
       localStorage.setItem('saveOnLocalStorage', state.saveOnLocalStorage.toString());
+      if (!state.saveOnLocalStorage) {
+        localStorage.removeItem('enigma');
+        localStorage.removeItem('nickName');
+      } else {
+        localStorage.setItem('enigma', state.enigma);
+        localStorage.setItem('nickName', state.nickName);
+      }
     },
   },
 });

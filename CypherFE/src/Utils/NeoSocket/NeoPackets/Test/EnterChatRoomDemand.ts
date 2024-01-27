@@ -3,7 +3,7 @@ import { DNeoPacket } from '../../NeoSocketLib/Decorator/DNeoPacket';
 import { NeoPacket } from '../../NeoSocketLib/Base/NeoPacket';
 import { DemandPacket } from '../../NeoSocketLib/Base/DemandPacket';
 
-@DNeoPacket()
+@DNeoPacket(0, 'EnterChatRoomDemand')
 export class EnterChatRoomDemand extends DemandPacket {
   @DKey(0)
   public UserName: string = '';
