@@ -1,59 +1,36 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NeoClient } from '../../Utils/NeoSocket/NeoSocketLib/NeoClient';
-import { closeConnection, openConnection } from './NeoSocketReducer';
+import { createSlice } from '@reduxjs/toolkit';
 
-// Define the initial state using your existing ConnectionState interface
 interface NeoSocketState {
-  client: NeoClient | null;
+  clientId: number | null;
   isConnected: boolean;
-  isLoading: boolean;
+  error: any;
 }
 
 const initialState: NeoSocketState = {
-  client: null,
+  clientId: null,
   isConnected: false,
-  isLoading: false,
+  error: null,
 };
+
 const connectionSlice = createSlice({
-  name: 'neosocket', // Give your slice a name
+  name: 'connection',
   initialState,
   reducers: {
-    // Automatically generates the action 'connection/setConnection'
-    setConnection: (state, action: PayloadAction<NeoClient | null>) => {
-      state.client = action.payload;
+    connected: (state, action) => {
+      console.log('Connected to NeoSocket Server Successfully!');
+      state.isConnected = true;
+      state.clientId = action.payload;
+      state.error = null;
     },
-    // Automatically generates the action 'connection/setIsConnected'
-    setIsConnected: (state, action: PayloadAction<boolean>) => {
-      state.isConnected = action.payload;
-    },
-    onDisconnect: (state) => {
-      state.client = null;
+    disconnected: (state) => {
       state.isConnected = false;
+      state.clientId = null;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(openConnection.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(openConnection.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isConnected = true;
-      })
-      .addCase(openConnection.rejected, (state) => {
-        state.isLoading = false;
-        state.isConnected = false;
-      })
-      .addCase(closeConnection.fulfilled, (state) => {
-        state.client = null;
-        state.isConnected = false;
-      });
-    // Handle other cases as needed
+    connectionError: (state, action) => {
+      state.error = action.payload;
+    },
   },
 });
 
-// Export the automatically generated action creators
-export const { onDisconnect, setConnection, setIsConnected } = connectionSlice.actions;
-
-// Export the reducer
+export const { connected, disconnected, connectionError } = connectionSlice.actions;
 export default connectionSlice.reducer;

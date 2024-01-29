@@ -10,6 +10,8 @@ import { MessageDTO } from '../NeoPackets/Test/MessageDTO';
 import { NewUserConnectedCommand } from '../NeoPackets/Test/NewUserConnectedCommand';
 import { NewUserGreetingCommand } from '../NeoPackets/Test/NewUserGreetingCommand';
 import { UserDisconnectedCommand } from '../NeoPackets/Test/UserDisconnectedCommand';
+import { Pong } from '../NeoPackets/PingPong/Pong';
+import { Ping } from '../NeoPackets/PingPong/Ping';
 
 export function cachePackets() {
   const listPackets = [
@@ -24,6 +26,8 @@ export function cachePackets() {
     NewUserConnectedCommand,
     NewUserGreetingCommand,
     UserDisconnectedCommand,
+    Ping,
+    Pong,
   ];
   NeoCache.registPackets(listPackets);
 }

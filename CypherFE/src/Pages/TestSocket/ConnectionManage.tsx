@@ -1,19 +1,23 @@
 // ConnectionManage.tsx
 import React from 'react';
-import { Button, Typography } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../Redux/store';
-import { closeConnection, openConnection } from '../../Features/NeoSocket/NeoSocketReducer';
+import Client from '../../API/Client';
+import SensorsIcon from '@mui/icons-material/Sensors';
+import SensorsOffIcon from '@mui/icons-material/SensorsOff';
 
 const ConnectionManage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { client, isConnected } = useSelector((state: RootState) => state.neosocket);
+  const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);
   return (
-    <>
-      <Button onClick={() => dispatch(openConnection())}>Open Connection</Button>
-      <Button onClick={() => dispatch(closeConnection())}>Close Connection</Button>
-      <Typography>{isConnected ? 'Connecting' : 'Discconected'}</Typography>
-    </>
+    <Stack sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingBlock: 2 }} spacing={3} direction={'row'}>
+      <Button onClick={() => Client.reconnect()}>Open Connection</Button>
+      <Button onClick={() => Client.closeConnection()}>Close Connection</Button>
+      {/*<Typography>{isConnected ? 'Connecting' : 'Discconected'}</Typography>*/}
+      {/*Make Sensorcolor be green*/}
+      {isConnected ? <SensorsIcon color={'success'} /> : <SensorsOffIcon color={'error'} />}
+    </Stack>
   );
 };
 

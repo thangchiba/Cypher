@@ -3,10 +3,11 @@ import Box from '@mui/material/Box';
 
 type CenterBoxProps = {
   width?: number;
+  height?: number;
 };
 
-export const CenterBox = styled(Box)<CenterBoxProps>(({ theme, width = 1000 }) => ({
-  height: 600,
+export const CenterBox = styled(Box)<CenterBoxProps>(({ theme, width = 1000, height = 600 }) => ({
+  height: height,
   width: width,
   [theme.breakpoints.down('sm')]: {
     height: '90%',

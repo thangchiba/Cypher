@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PacketAutocomplete from './PacketAutocomplete';
 import Box from '@mui/material/Box';
 import { CNeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Cache/Packet/CNeoPacket';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import PacketPropForm from './PacketPropForm';
 
 function Index() {
@@ -20,8 +20,7 @@ function Index() {
 
   return (
     <>
-      <Box sx={{ width: '100%', padding: 2, border: '1px solid', borderRadius: 3 }}>
-        {/*<Typography>Selected Packet : {selectedPacket?.packetTypeName}</Typography>*/}
+      <Box sx={{ width: '100%', padding: 2, border: '1px solid', borderRadius: 3, height: 600 }}>
         <PacketAutocomplete setSelectedPacket={handlePacketSelect} />
         <Divider sx={{ my: 3 }}>Packet Content</Divider>
         {selectedPacket && <PacketPropForm packet={selectedPacket} jsonPacket={jsonPacket} />}

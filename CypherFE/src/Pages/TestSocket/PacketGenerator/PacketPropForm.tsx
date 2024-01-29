@@ -7,9 +7,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
 import { NeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Base/NeoPacket';
 import { jsonToClassInstance } from '../../../Utils/utils';
+import Client from '../../../API/Client';
 
 const PacketPropForm: React.FC<{ packet: CNeoPacket; jsonPacket: string }> = (props) => {
-  const { client, isConnected } = useSelector((state: RootState) => state.neosocket);
+  const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);
   const { packet, jsonPacket } = props;
 
   const formik = useFormik({
@@ -17,7 +18,7 @@ const PacketPropForm: React.FC<{ packet: CNeoPacket; jsonPacket: string }> = (pr
     onSubmit: (values) => {
       const updatedPacket = JSON.parse(JSON.stringify(values)) as NeoPacket;
       const sendPacket = jsonToClassInstance(updatedPacket, packet.construct);
-      client?.send(sendPacket);
+      Client?.send(sendPacket);
     },
   });
 
