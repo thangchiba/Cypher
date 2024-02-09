@@ -3,9 +3,13 @@ import { toast } from 'react-toastify';
 import { connected, disconnected } from '../Features/NeoSocket/NeoSocketSlice';
 import { store } from '../Redux/store';
 
-// const url = 'neosks://api.thangchiba.com/websocket';
-const url = 'neosk://192.168.1.74:51994';
-// const url = 'neosks://192.168.1.74/websocket';
+// Read environment variables
+const secure = process.env.REACT_APP_NEOSOCKET_SECURE === 'true';
+const address = process.env.REACT_APP_NEOSOCKET_ADDRESS || 'localhost';
+const port = process.env.REACT_NEOSOCKET_PORT || (secure ? 443 : 80);
+const protocol = secure ? 'neosks' : 'neosk';
+
+const url = `${protocol}://${address}:${port}`;
 
 const Client = new NeoClient(url);
 Client.onDisconnect.push(() => {
