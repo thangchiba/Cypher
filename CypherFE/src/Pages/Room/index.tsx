@@ -36,7 +36,7 @@ function Index() {
     };
 
     // Set interval to ping the server every 1 second
-    const interval = setInterval(handlePing, 5000);
+    const interval = setInterval(handlePing, 1000);
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(interval);
