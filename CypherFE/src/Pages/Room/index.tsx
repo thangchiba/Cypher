@@ -12,14 +12,14 @@ interface RouteParams {
 }
 
 function Index() {
-  const { enterRoom, roomName, getQueryStringValue } = useRoom();
+  const { roomName, getQueryStringValue } = useRoom();
   const enigmaCode = getQueryStringValue('enigma');
 
   useEffect(() => {
     const handlePing = async () => {
       try {
         // const pingPacket = new Ping();
-        const pingPacket = new TestDemand();
+        const pingPacket = new Ping();
 
         // Record the time before sending the ping
         const startTime = Date.now();
@@ -31,12 +31,12 @@ function Index() {
         const roundTripTime = Date.now() - startTime;
         console.log('Ping-Pong round-trip time: ', roundTripTime, 'ms');
       } catch (error) {
-        console.error('Error during ping: ', error);
+        console.log('Error during ping: ', error);
       }
     };
 
     // Set interval to ping the server every 1 second
-    const interval = setInterval(handlePing, 5000);
+    const interval = setInterval(handlePing, 10000);
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(interval);
