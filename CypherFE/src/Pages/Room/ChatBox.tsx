@@ -15,6 +15,7 @@ import HomeButton from '../../Components/HomeButton';
 import Client from '../../API/Client';
 import ReconnectButton from '../../Components/ReconnectButton';
 import useScroll from './useScroll';
+import DisconnectButton from '../../Components/DisconnectButton';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBottom: '1px solid',
@@ -62,13 +63,15 @@ const ChatBox: React.FC = () => {
   const dispatch = useAppDispatch();
   const [input, setInput] = useState('');
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
+  const clientId = useSelector((redux: RootState) => redux.neosocket.clientId);
   const { messagesEndRef } = useScroll();
   const handleReceiveMessage = useCallback(
     (packet: MessageDTO, context: HandleContext) => {
+      console.log('change', { clientId });
       const newMessage = mapDTOToMessage(packet, enigma, nickName);
       dispatch(addMessage(newMessage));
     },
-    [enigma, nickName],
+    [enigma, nickName, clientId],
   );
   useHandler(MessageDTO, handleReceiveMessage);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,6 +98,7 @@ const ChatBox: React.FC = () => {
       <FloatingBar>
         <HomeButton />
         <ThemeToggleButton />
+        <DisconnectButton />
         <ReconnectButton />
         <SettingsButton />
       </FloatingBar>

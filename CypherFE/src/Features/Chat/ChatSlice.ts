@@ -60,7 +60,6 @@ export const enterRoom = createAsyncThunk('chat/enterRoom', async (payload, thun
   try {
     const currentState: RootState = thunkAPI.getState() as RootState;
     const { enigma, nickName, roomName, isEnteringRoom } = currentState.chat;
-    toast.info('Entering room...');
     if (!roomName || roomName === '') {
       toast.error('Room name is not valid');
       return;
