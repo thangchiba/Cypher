@@ -6,14 +6,14 @@ import { store } from '../Redux/store';
 // Read environment variables
 const secure = process.env.REACT_APP_NEOSOCKET_SECURE === 'true';
 const address = process.env.REACT_APP_NEOSOCKET_ADDRESS || 'localhost';
-const port = process.env.REACT_NEOSOCKET_PORT || (secure ? 443 : 80);
+const port = process.env.REACT_APP_NEOSOCKET_PORT || (secure ? 443 : 80);
 const protocol = secure ? 'neosks' : 'neosk';
 
 const url = `${protocol}://${address}:${port}`;
 
 const Client = new NeoClient(url);
 Client.onDisconnect.push(() => {
-  toast.warning('Disconnected NeoSocket Server!');
+  toast.error('Disconnected NeoSocket Server!');
   store.dispatch(disconnected());
 });
 

@@ -1,11 +1,14 @@
 // chatSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setMessages } from '../Message/MessageSlice';
-import { decryptAndMapMessage } from '../../Utils/convertMessage';
+import { decryptAndMapMessage, mapDTOsToMessage } from '../../Utils/convertMessage';
 import { RootState } from '../../Redux/store';
+import { toast } from 'react-toastify';
+import { SendEnterRoomPacket } from '../../API/RoomAPI';
 
 interface ChatSlice {
   roomName: string;
+  isEnteringRoom: boolean;
   enigma: string;
   nickName: string;
   saveOnLocalStorage: boolean;
@@ -13,6 +16,7 @@ interface ChatSlice {
 
 const initialState: ChatSlice = {
   roomName: '',
+  isEnteringRoom: false,
   enigma: localStorage.getItem('enigma') || '',
   nickName: localStorage.getItem('nickName') || '',
   saveOnLocalStorage: localStorage.getItem('saveOnLocalStorage') === 'true',
@@ -31,6 +35,9 @@ const chatSlice = createSlice({
     setRoomName: (state, action: PayloadAction<string>) => {
       state.roomName = action.payload;
     },
+    setEnteringRoom: (state, action: PayloadAction<boolean>) => {
+      state.isEnteringRoom = action.payload;
+    },
     toggleSaveOnLocalStorage: (state) => {
       state.saveOnLocalStorage = !state.saveOnLocalStorage;
       localStorage.setItem('saveOnLocalStorage', state.saveOnLocalStorage.toString());
@@ -45,10 +52,28 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setEnigma, setNickName, setRoomName, toggleSaveOnLocalStorage } = chatSlice.actions;
+export const { setEnigma, setNickName, setRoomName, setEnteringRoom, toggleSaveOnLocalStorage } = chatSlice.actions;
 
 export default chatSlice.reducer;
 
+export const enterRoom = createAsyncThunk('chat/enterRoom', async (payload, thunkAPI) => {
+  try {
+    const currentState: RootState = thunkAPI.getState() as RootState;
+    const { enigma, nickName, roomName, isEnteringRoom } = currentState.chat;
+    if (!roomName || roomName === '') {
+      toast.error('Room name is not valid');
+      return;
+    }
+
+    const receivedMessages = await SendEnterRoomPacket(roomName, enigma, nickName);
+    if (!receivedMessages) return;
+
+    const decryptedMessages = mapDTOsToMessage(receivedMessages, enigma, nickName);
+    thunkAPI.dispatch(setMessages(decryptedMessages));
+  } catch (e) {
+  } finally {
+  }
+});
 export const updateEnigma = createAsyncThunk('chat/updateEnigma', async (newEnigma: string, thunkAPI) => {
   try {
     thunkAPI.dispatch(setEnigma(newEnigma));

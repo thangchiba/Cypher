@@ -39,7 +39,7 @@ export class SenderFactory {
       return await tcs.promise;
     } catch (e) {
       console.log('Cannot Send Demand');
-      return null;
+      throw e;
     }
   }
 

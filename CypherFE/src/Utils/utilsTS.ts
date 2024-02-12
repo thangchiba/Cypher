@@ -7,6 +7,7 @@ import CryptoJS from 'crypto-js';
  * @returns The encrypted message.
  */
 export const encryptMessage = (message: string, key: string): string => {
+  if (!key) return message;
   return CryptoJS.AES.encrypt(message, key).toString();
 };
 
@@ -18,6 +19,7 @@ export const encryptMessage = (message: string, key: string): string => {
  */
 export const decryptMessage = (ciphertext: string, key: string): string => {
   try {
+    if (!key) return ciphertext;
     const bytes = CryptoJS.AES.decrypt(ciphertext, key);
     return bytes.toString(CryptoJS.enc.Utf8);
   } catch {
