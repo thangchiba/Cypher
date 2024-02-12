@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../../Redux/store';
 import { useSelector } from 'react-redux';
@@ -11,16 +11,11 @@ interface RouteParams {
 }
 
 const useRoom = () => {
-  console.log('rerender useRoom');
   const location = useLocation();
   const params = useParams<'roomName'>();
   const dispatch = useAppDispatch();
-  const { enigma, nickName } = useSelector((state: RootState) => state.chat);
-
   const pathRoomName = params.roomName;
   const { roomName } = useSelector((state: RootState) => state.chat);
-  const isEnteringRoom = useRef<boolean>(false);
-
   const getQueryStringValue = (key: string) => new URLSearchParams(location.search).get(key);
 
   useEffect(() => {
@@ -34,34 +29,43 @@ const useRoom = () => {
   }, [roomName, dispatch]);
 
   useEffect(() => {
+    let pingFailures = 0; // Initialize counter for consecutive ping failures
+
     const handlePing = async () => {
+      if (pingFailures >= 3) {
+        console.log('Ping failed 3 times, stopping pings');
+        return; // Stop execution if failed 3 times
+      }
+
       try {
-        // const pingPacket = new Ping();
         const pingPacket = new Ping();
-
-        // Record the time before sending the ping
         const startTime = Date.now();
-
-        // await Client.demand(pingPacket);
         await Client.demand(pingPacket);
-
-        // Calculate the round-trip time
         const roundTripTime = Date.now() - startTime;
         console.log('Ping-Pong round-trip time: ', roundTripTime, 'ms');
+
+        pingFailures = 0; // Reset counter on successful ping
       } catch (error) {
         console.log('Error during ping: ', error);
-        Client?.reconnect();
-        await Client.connect(3000);
-        dispatch(enterRoom());
+        pingFailures += 1; // Increment counter on failure
+
+        if (pingFailures < 3) {
+          try {
+            Client?.closeConnection();
+            Client?.reconnect();
+            await Client.connect(3000);
+            dispatch(enterRoom());
+          } catch (e) {
+            console.log('Error during reconnect: ', e);
+          }
+        }
       }
     };
 
-    // Set interval to ping the server every 1 second
-    const interval = setInterval(handlePing, 1000);
+    const interval = setInterval(handlePing, 5000);
 
-    // Cleanup function to clear the interval when the component unmounts
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval); // Cleanup
+  }, []); // Dependency array remains empty for componentDidMount behavior
 
   return { roomName: pathRoomName, getQueryStringValue };
 };
