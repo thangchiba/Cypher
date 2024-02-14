@@ -16,6 +16,7 @@ import Client from '../../API/Client';
 import ReconnectButton from '../../Components/ReconnectButton';
 import useScroll from './useScroll';
 import DisconnectButton from '../../Components/DisconnectButton';
+import ChatStatusIcon from '../../Components/ChatStatusIcon';
 
 const MessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   borderBottom: '1px solid',
@@ -63,7 +64,7 @@ const ChatBox: React.FC = () => {
   const dispatch = useAppDispatch();
   const [input, setInput] = useState('');
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
-  const clientId = useSelector((redux: RootState) => redux.neosocket.clientId);
+  const { isConnected, clientId } = useSelector((redux: RootState) => redux.neosocket);
   const { messagesEndRef } = useScroll();
   const handleReceiveMessage = useCallback(
     (packet: MessageDTO, context: HandleContext) => {
@@ -126,9 +127,11 @@ const ChatBox: React.FC = () => {
             <Grid item xs={9} md={10}>
               <TextField fullWidth variant="outlined" value={input} onChange={handleInputChange} placeholder="Type a message" />
             </Grid>
-            <Grid item xs={0.5}></Grid>
+            <Grid item xs={0.5} display="flex" justifyContent="center" alignItems="center">
+              {/*<ChatStatusIcon status={'online'} />*/}
+            </Grid>
             <Grid item xs={2.5} md={1.5} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Button type={'submit'} variant="contained" fullWidth sx={{ height: '100%', borderRadius: 5 }}>
+              <Button type={'submit'} variant="contained" fullWidth sx={{ height: '100%', borderRadius: 5 }} disabled={!isConnected}>
                 Send
               </Button>
             </Grid>

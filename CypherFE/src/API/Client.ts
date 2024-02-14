@@ -13,12 +13,12 @@ const url = `${protocol}://${address}:${port}`;
 
 const Client = new NeoClient(url);
 Client.onDisconnect.push(() => {
-  toast.error('Disconnected NeoSocket Server!');
+  // toast.error('Disconnected NeoSocket Server!');
   store.dispatch(disconnected());
 });
 
 Client.onConnect.push(() => {
-  toast.success('Connected NeoSocket Server!');
+  // toast.success('Connected NeoSocket Server!');
   // console.log('New client id : ', Client?.clientId);
   store.dispatch(connected(Client?.clientId));
 });

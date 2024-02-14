@@ -28,6 +28,7 @@ const connectionSlice = createSlice({
     },
     connectionError: (state, action) => {
       state.error = action.payload;
+      state.isConnected = false;
     },
   },
 });
