@@ -6,12 +6,8 @@ import useRoom from './useRoom';
 import MessagesFrame from './MessagesFrame';
 import ChatFormFrame from './ChatFormFrame';
 
-interface RouteParams {
-  roomName: string | undefined;
-}
-
 function Index() {
-  const { roomName } = useRoom();
+  useRoom();
 
   return (
     <PageBackGround>

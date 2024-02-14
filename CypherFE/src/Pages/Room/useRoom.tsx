@@ -6,10 +6,6 @@ import { enterRoom, setEnigma, setRoomName } from '../../Features/Chat/ChatSlice
 import Client from '../../API/Client';
 import { Ping } from '../../Utils/NeoSocket/NeoPackets/PingPong/Ping';
 
-interface RouteParams {
-  roomName: string | undefined;
-}
-
 const useRoom = () => {
   const location = useLocation();
   const params = useParams<'roomName'>();
@@ -20,13 +16,12 @@ const useRoom = () => {
   const enigmaPathCode = getQueryStringValue('enigma');
   useEffect(() => {
     if (!enigmaPathCode) return;
-    console.log('enigmaPathCode', enigmaPathCode);
     dispatch(setEnigma(enigmaPathCode));
   }, [enigmaPathCode, dispatch]);
 
   useEffect(() => {
     dispatch(setRoomName(pathRoomName || ''));
-  }, [pathRoomName]);
+  }, [pathRoomName, dispatch]);
 
   useEffect(() => {
     if (!roomName) return;
@@ -72,7 +67,7 @@ const useRoom = () => {
     const interval = setInterval(handlePing, 5000);
 
     return () => clearInterval(interval); // Cleanup
-  }, []); // Dependency array remains empty for componentDidMount behavior
+  }, [dispatch]); // Dependency array remains empty for componentDidMount behavior
 
   return { roomName: pathRoomName, getQueryStringValue };
 };

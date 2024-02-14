@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { encryptMessage } from '../../../Utils/utilsTS';
 import { MessageDTO } from '../../../Utils/NeoSocket/NeoPackets/Test/MessageDTO';
 import Client from '../../../API/Client';
+import ChatStatusIcon from '../../../Components/ChatStatusIcon';
 
 const StyledChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
   // position: 'absolute',
@@ -17,7 +18,7 @@ const StyledChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
 const ChatFormFrame = () => {
   const [input, setInput] = useState('');
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
-  const { isConnected, clientId } = useSelector((redux: RootState) => redux.neosocket);
+  const { isConnected } = useSelector((redux: RootState) => redux.neosocket);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
@@ -42,7 +43,7 @@ const ChatFormFrame = () => {
             <TextField fullWidth variant="outlined" value={input} onChange={handleInputChange} placeholder="Type a message" />
           </Grid>
           <Grid item xs={0.5} display="flex" justifyContent="center" alignItems="center">
-            {/*<ChatStatusIcon status={'online'} />*/}
+            {!isConnected && <ChatStatusIcon status={'offline'} />}
           </Grid>
           <Grid item xs={2.5} md={1.5} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <Button type={'submit'} variant="contained" fullWidth sx={{ height: '100%', borderRadius: 5 }} disabled={!isConnected}>

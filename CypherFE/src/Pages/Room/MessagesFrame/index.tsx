@@ -31,7 +31,6 @@ const StyledMessagesFrame = styled(Box)(({ theme }: { theme: Theme }) => ({
 function MessagesFrame() {
   const dispatch = useAppDispatch();
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
-  const { clientId } = useSelector((redux: RootState) => redux.neosocket);
   const messages = useSelector((redux: RootState) => redux.messages.messages);
   const { messagesEndRef } = useScroll();
   const handleReceiveMessage = useCallback(
@@ -39,7 +38,7 @@ function MessagesFrame() {
       const newMessage = mapDTOToMessage(packet, enigma, nickName);
       dispatch(addMessage(newMessage));
     },
-    [enigma, nickName, clientId],
+    [enigma, nickName, dispatch],
   );
   useHandler(MessageDTO, handleReceiveMessage);
   return (
