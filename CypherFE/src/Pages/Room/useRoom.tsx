@@ -55,6 +55,7 @@ const useRoom = () => {
             Client?.reconnect();
             await Client.connect(3000);
             dispatch(enterRoom());
+            pingFailures = 0; // Reset counter on successful ping
           } catch (e) {
             console.log('Error during reconnect: ', e);
           }

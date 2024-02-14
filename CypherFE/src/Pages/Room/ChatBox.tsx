@@ -64,11 +64,9 @@ const ChatBox: React.FC = () => {
   const [input, setInput] = useState('');
   const { enigma, nickName } = useSelector((redux: RootState) => redux.chat);
   const clientId = useSelector((redux: RootState) => redux.neosocket.clientId);
-  console.log(clientId, 'client id');
   const { messagesEndRef } = useScroll();
   const handleReceiveMessage = useCallback(
     (packet: MessageDTO, context: HandleContext) => {
-      console.log('Vao update handleReceive ne', { clientId });
       const newMessage = mapDTOToMessage(packet, enigma, nickName);
       dispatch(addMessage(newMessage));
     },
@@ -88,7 +86,6 @@ const ChatBox: React.FC = () => {
       newMessage.UserName = encodedUserName;
       newMessage.Content = encodedChatContent;
       setInput('');
-      console.log('Send by client id : ', Client?.clientId, newMessage);
       Client?.command(newMessage);
     }
   };
