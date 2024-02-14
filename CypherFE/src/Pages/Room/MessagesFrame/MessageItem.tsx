@@ -1,7 +1,7 @@
 import { Stack, styled, Typography } from '@mui/material';
 import { ListItemProps } from '@mui/material/ListItem';
 import { Box } from '@mui/system';
-import { formatDateToCustomString } from '../../Utils/dateConvert';
+import { formatDateToCustomString } from '../../../Utils/dateConvert';
 
 // Extend the ListItemProps type to include the isSender prop
 interface StyledMessageItemProps extends ListItemProps {

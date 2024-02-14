@@ -2,13 +2,9 @@ import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../../Redux/store';
 import { useSelector } from 'react-redux';
-import { enterRoom, setRoomName } from '../../Features/Chat/ChatSlice';
+import { enterRoom, setEnigma, setRoomName } from '../../Features/Chat/ChatSlice';
 import Client from '../../API/Client';
 import { Ping } from '../../Utils/NeoSocket/NeoPackets/PingPong/Ping';
-
-interface RouteParams {
-  roomName: string | undefined;
-}
 
 const useRoom = () => {
   const location = useLocation();
@@ -17,10 +13,15 @@ const useRoom = () => {
   const pathRoomName = params.roomName;
   const { roomName } = useSelector((state: RootState) => state.chat);
   const getQueryStringValue = (key: string) => new URLSearchParams(location.search).get(key);
+  const enigmaPathCode = getQueryStringValue('enigma');
+  useEffect(() => {
+    if (!enigmaPathCode) return;
+    dispatch(setEnigma(enigmaPathCode));
+  }, [enigmaPathCode, dispatch]);
 
   useEffect(() => {
     dispatch(setRoomName(pathRoomName || ''));
-  }, [pathRoomName]);
+  }, [pathRoomName, dispatch]);
 
   useEffect(() => {
     if (!roomName) return;
@@ -55,6 +56,7 @@ const useRoom = () => {
             Client?.reconnect();
             await Client.connect(3000);
             dispatch(enterRoom());
+            pingFailures = 0; // Reset counter on successful ping
           } catch (e) {
             console.log('Error during reconnect: ', e);
           }
@@ -65,7 +67,7 @@ const useRoom = () => {
     const interval = setInterval(handlePing, 5000);
 
     return () => clearInterval(interval); // Cleanup
-  }, []); // Dependency array remains empty for componentDidMount behavior
+  }, [dispatch]); // Dependency array remains empty for componentDidMount behavior
 
   return { roomName: pathRoomName, getQueryStringValue };
 };
