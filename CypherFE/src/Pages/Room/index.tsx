@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { PageBackGround } from '../../Components/PageBackGround';
 import { CenterBox } from '../../Components/CenterBox';
-import ChatBox from './ChatBox';
+import ChatBoxNav from './ChatBoxNav';
 import useRoom from './useRoom';
-import { Ping } from '../../Utils/NeoSocket/NeoPackets/PingPong/Ping';
-import Client from '../../API/Client';
-import { TestDemand } from '../../Utils/NeoSocket/NeoPackets/Test/TestDemand';
+import MessagesFrame from './MessagesFrame';
+import ChatFormFrame from './ChatFormFrame';
 
 interface RouteParams {
   roomName: string | undefined;
 }
 
 function Index() {
-  const { roomName, getQueryStringValue } = useRoom();
-  const enigmaCode = getQueryStringValue('enigma');
+  const { roomName } = useRoom();
 
   return (
     <PageBackGround>
       <CenterBox>
         {/*<p>Room Name: {roomName}</p>*/}
-        <ChatBox></ChatBox>
+        <ChatBoxNav />
+        <MessagesFrame />
+        <ChatFormFrame />
       </CenterBox>
     </PageBackGround>
   );
