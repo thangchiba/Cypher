@@ -1,6 +1,5 @@
-import { NeoPacket } from '../../NeoSocketLib/Base/NeoPacket';
 import { DNeoPacket } from '../../NeoSocketLib/Decorator/DNeoPacket';
 import { DemandPacket } from '../../NeoSocketLib/Base/DemandPacket';
 
-@DNeoPacket()
+@DNeoPacket(0, 'Ping')
 export class Ping extends DemandPacket {}
