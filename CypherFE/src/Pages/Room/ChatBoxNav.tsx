@@ -21,7 +21,7 @@ const ChatBoxNav: React.FC = () => {
     <FloatingBar>
       <HomeButton />
       <ThemeToggleButton />
-      {/*<DisconnectButton />*/}
+      <DisconnectButton />
       <ReconnectButton />
       <SettingsButton />
     </FloatingBar>

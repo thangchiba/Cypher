@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../../Redux/store';
 import { useSelector } from 'react-redux';
-import { enterRoom, setEnigma, setRoomName } from '../../Features/Chat/ChatSlice';
+import { enterRoom, setEnigma, setNickName, setRoomName } from '../../Features/Chat/ChatSlice';
 import Client from '../../API/Client';
 import { Ping } from '../../Utils/NeoSocket/NeoPackets/PingPong/Ping';
 
@@ -13,12 +13,16 @@ const useRoom = () => {
   const pathRoomName = params.roomName;
   const { roomName } = useSelector((state: RootState) => state.chat);
   const getQueryStringValue = (key: string) => new URLSearchParams(location.search).get(key);
-  const enigmaPathCode = getQueryStringValue('enigma');
+  const enigmaPathValue = getQueryStringValue('enigma');
+  const nickNamePathValue = getQueryStringValue('nickName');
   useEffect(() => {
-    if (!enigmaPathCode) return;
-    dispatch(setEnigma(enigmaPathCode));
-  }, [enigmaPathCode, dispatch]);
-
+    if (!enigmaPathValue) return;
+    dispatch(setEnigma(enigmaPathValue || ''));
+  }, [enigmaPathValue, dispatch]);
+  useEffect(() => {
+    if (!nickNamePathValue) return;
+    dispatch(setNickName(nickNamePathValue));
+  }, [nickNamePathValue, dispatch]);
   useEffect(() => {
     dispatch(setRoomName(pathRoomName || ''));
   }, [pathRoomName, dispatch]);
