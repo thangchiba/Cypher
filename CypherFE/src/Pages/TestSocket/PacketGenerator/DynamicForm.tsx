@@ -15,7 +15,7 @@ interface DynamicFormProps {
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ propInfo, value, handleChange, parentProps, setFieldValue }) => {
   let inputField;
-  const branchProp = parentProps == '' ? propInfo.propertyName : `${parentProps}.${propInfo.propertyName}`;
+  const branchProp = parentProps === '' ? propInfo.propertyName : `${parentProps}.${propInfo.propertyName}`;
   switch (propInfo.propertyType) {
     case 'string':
       inputField = (

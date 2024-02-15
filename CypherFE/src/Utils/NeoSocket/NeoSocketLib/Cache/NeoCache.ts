@@ -32,11 +32,13 @@ export class NeoCache {
   }
   static registPacket(packet: new () => NeoPacket) {
     let instance = new packet();
+    console.log(`Regist packet ${instance.constructor.name}`);
   }
 
   static registPackets(packets: Array<new () => NeoPacket>) {
     packets.forEach((packet) => {
       let instance = new packet();
+      console.log(`Regist packet ${instance.constructor.name}`);
     });
   }
 

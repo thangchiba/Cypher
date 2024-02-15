@@ -8,8 +8,7 @@ import { CenterBox } from '../../Components/CenterBox';
 import NeonAvatar from '../../Components/NeonAvatar';
 // @ts-ignore
 import avatar from '../../Static/Images/Logo/cypherLogo.png';
-import { RootState, useAppDispatch } from '../../Redux/store';
-import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../Redux/store';
 import EnigmaTextField from '../../Components/Setup/EnigmaTextField';
 import NickNameTextField from '../../Components/Setup/NickNameTextField';
 import { toast } from 'react-toastify';
@@ -18,7 +17,6 @@ import { setRoomName } from '../../Features/Chat/ChatSlice';
 function Index() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const theme = useSelector((state: RootState) => state.theme);
   return (
     <PageBackGround>
       <CenterBox width={400}>

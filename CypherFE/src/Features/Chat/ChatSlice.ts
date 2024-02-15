@@ -59,7 +59,7 @@ export default chatSlice.reducer;
 export const enterRoom = createAsyncThunk('chat/enterRoom', async (payload, thunkAPI) => {
   try {
     const currentState: RootState = thunkAPI.getState() as RootState;
-    const { enigma, nickName, roomName, isEnteringRoom } = currentState.chat;
+    const { enigma, nickName, roomName } = currentState.chat;
     if (!roomName || roomName === '') {
       toast.error('Room name is not valid');
       return;

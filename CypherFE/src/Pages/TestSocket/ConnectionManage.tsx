@@ -2,14 +2,13 @@
 import React from 'react';
 import { Button, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../Redux/store';
+import { RootState } from '../../Redux/store';
 import Client from '../../API/Client';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import SensorsOffIcon from '@mui/icons-material/SensorsOff';
 
 const ConnectionManage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);
+  const { isConnected } = useSelector((state: RootState) => state.neosocket);
   return (
     <Stack sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingBlock: 2 }} spacing={3} direction={'row'}>
       <Button onClick={() => Client.reconnect()}>Open Connection</Button>

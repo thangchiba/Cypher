@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/store';
-import { blueGrey } from '@mui/material/colors';
 
 const StyledBox = styled(Box)(({ theme }: { theme: Theme }) => ({
   width: 170,

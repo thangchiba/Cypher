@@ -35,7 +35,7 @@ export class NeoSerializer {
     const keys = packetCache.keys;
     const dataArray: any[] = [];
     for (const keyCache of keys) {
-      const { keyId, propertyName, propertyType } = keyCache;
+      const { keyId, propertyName } = keyCache;
       // @ts-ignore
       const value = packet[propertyName];
       const nestedType = NeoCache.packetByName[value?.Header?.packetTypeName];
@@ -91,6 +91,7 @@ export class NeoSerializer {
     }
     return packet;
   }
+
   public static serializeHeader(header: NeoPacketHeader): Uint8Array {
     let dataArray: Array<any> = [];
 

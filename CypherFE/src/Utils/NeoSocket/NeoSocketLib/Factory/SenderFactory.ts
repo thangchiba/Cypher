@@ -2,8 +2,6 @@ import { NeoClient } from '../NeoClient';
 import { NeoPacket } from '../Base/NeoPacket';
 import { NeoSerializer } from '../Serializer/NeoSerializer';
 
-const MAX_BYTES_SEND = 50000;
-
 const DemandMapper: Map<number, { resolve: (value: NeoPacket) => void; reject: () => void }> = new Map();
 
 export class SenderFactory {

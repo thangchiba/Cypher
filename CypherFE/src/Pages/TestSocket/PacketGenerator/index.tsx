@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import PacketAutocomplete from './PacketAutocomplete';
 import Box from '@mui/material/Box';
 import { CNeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Cache/Packet/CNeoPacket';
-import { Divider, Typography } from '@mui/material';
+import { Divider } from '@mui/material';
 import PacketPropForm from './PacketPropForm';
 
 function Index() {
   const [selectedPacket, setSelectedPacket] = useState<CNeoPacket | null>(null);
-  const [packetState, setPacketState] = useState();
+  // const [packetState, setPacketState] = useState();
   const [jsonPacket, setJsonPacket] = useState('');
 
   const handlePacketSelect = (packet: CNeoPacket | null) => {

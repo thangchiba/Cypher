@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../Redux/store';
 import ConnectionManage from './ConnectionManage';
 import PacketGenerator from './PacketGenerator';
@@ -9,8 +9,7 @@ import { CenterBox } from '../../Components/CenterBox';
 import { PageBackGround } from '../../Components/PageBackGround';
 
 function Index() {
-  const dispatch = useDispatch();
-  const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);
+  const { isConnected } = useSelector((state: RootState) => state.neosocket);
   return (
     <Fragment>
       <PageBackGround>

@@ -3,14 +3,12 @@ import { CNeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Cache/Packet/C
 import { Box, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import DynamicForm from './DynamicForm';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../Redux/store';
 import { NeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Base/NeoPacket';
 import { jsonToClassInstance } from '../../../Utils/utils';
 import Client from '../../../API/Client';
 
 const PacketPropForm: React.FC<{ packet: CNeoPacket; jsonPacket: string }> = (props) => {
-  const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);
+  // const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);
   const { packet, jsonPacket } = props;
 
   const formik = useFormik({

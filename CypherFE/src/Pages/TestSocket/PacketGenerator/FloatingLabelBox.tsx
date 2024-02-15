@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, FormControl, InputLabel, Paper, Stack } from '@mui/material';
+import { Box, FormControl, InputLabel, Paper } from '@mui/material';
 import { getRandomColor } from '../../../Utils/utils';
 
 interface FloatingLabelBoxProp {

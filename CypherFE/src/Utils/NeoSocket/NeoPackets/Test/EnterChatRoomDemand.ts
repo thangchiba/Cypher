@@ -1,6 +1,5 @@
 import { DKey } from '../../NeoSocketLib/Decorator/DKey';
 import { DNeoPacket } from '../../NeoSocketLib/Decorator/DNeoPacket';
-import { NeoPacket } from '../../NeoSocketLib/Base/NeoPacket';
 import { DemandPacket } from '../../NeoSocketLib/Base/DemandPacket';
 
 @DNeoPacket(0, 'EnterChatRoomDemand')
