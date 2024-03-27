@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton } from '@mui/material';
-import Client from '../API/Client';
+import Client from '../Features/NeoSocket/Client';
 import CachedIcon from '@mui/icons-material/Cached';
 import { useAppDispatch } from '../Redux/store';
 import { enterRoom } from '../Features/Chat/ChatSlice';

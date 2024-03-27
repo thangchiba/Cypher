@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../../Redux/store';
 import { useSelector } from 'react-redux';
 import { enterRoom, setEnigma, setNickName, setRoomName } from '../../Features/Chat/ChatSlice';
-import Client from '../../API/Client';
+import Client from '../../Features/NeoSocket/Client';
 import { Ping } from '../../Utils/NeoSocket/NeoPackets/PingPong/Ping';
 
 const useRoom = () => {

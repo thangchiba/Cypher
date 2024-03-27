@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton } from '@mui/material';
-import Client from '../API/Client';
+import Client from '../Features/NeoSocket/Client';
 import SickIcon from '@mui/icons-material/Sick';
 
 const DisconnectButton: React.FC = () => {

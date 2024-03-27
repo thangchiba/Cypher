@@ -5,7 +5,7 @@ import PacketItem from './PacketItem';
 import { NeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Base/NeoPacket';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
-import Client from '../../../API/Client';
+import Client from '../../../Features/NeoSocket/Client';
 
 const MAX_SHOWING_HISTORY = 1000;
 Index.propTypes = {};

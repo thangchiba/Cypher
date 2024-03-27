@@ -1,6 +1,6 @@
 import { EnterChatRoomDemand } from '../Utils/NeoSocket/NeoPackets/Test/EnterChatRoomDemand';
 import { EnterChatRoomReply } from '../Utils/NeoSocket/NeoPackets/Test/EnterChatRoomReply';
-import Client from './Client';
+import Client from '../Features/NeoSocket/Client';
 import { MessageDTO } from '../Utils/NeoSocket/NeoPackets/Test/MessageDTO';
 
 export async function SendEnterRoomPacket(roomName: string, enigma: string, nickName: string): Promise<MessageDTO[] | null> {

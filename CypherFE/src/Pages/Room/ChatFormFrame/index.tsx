@@ -4,7 +4,7 @@ import { RootState } from '../../../Redux/store';
 import { useSelector } from 'react-redux';
 import { encryptMessage } from '../../../Utils/utilsTS';
 import { MessageDTO } from '../../../Utils/NeoSocket/NeoPackets/Test/MessageDTO';
-import Client from '../../../API/Client';
+import Client from '../../../Features/NeoSocket/Client';
 import ChatStatusIcon from '../../../Components/ChatStatusIcon';
 
 const StyledChatFormFrame = styled(Box)(({ theme }: { theme: Theme }) => ({

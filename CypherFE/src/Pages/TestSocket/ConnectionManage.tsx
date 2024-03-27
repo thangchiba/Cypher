@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../Redux/store';
-import Client from '../../API/Client';
+import Client from '../../Features/NeoSocket/Client';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import SensorsOffIcon from '@mui/icons-material/SensorsOff';
 

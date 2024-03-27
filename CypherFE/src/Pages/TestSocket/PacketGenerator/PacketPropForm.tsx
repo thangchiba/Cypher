@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import DynamicForm from './DynamicForm';
 import { NeoPacket } from '../../../Utils/NeoSocket/NeoSocketLib/Base/NeoPacket';
 import { jsonToClassInstance } from '../../../Utils/utils';
-import Client from '../../../API/Client';
+import Client from '../../../Features/NeoSocket/Client';
 
 const PacketPropForm: React.FC<{ packet: CNeoPacket; jsonPacket: string }> = (props) => {
   // const { clientId, isConnected } = useSelector((state: RootState) => state.neosocket);

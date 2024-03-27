@@ -1,6 +1,6 @@
-import { NeoClient } from '../Utils/NeoSocket/NeoSocketLib/NeoClient';
-import { connected, disconnected } from '../Features/NeoSocket/NeoSocketSlice';
-import { store } from '../Redux/store';
+import { NeoClient } from '../../Utils/NeoSocket/NeoSocketLib/NeoClient';
+import { connected, disconnected } from './NeoSocketSlice';
+import { store } from '../../Redux/store';
 
 // Read environment variables
 const secure = process.env.REACT_APP_NEOSOCKET_SECURE === 'true';
